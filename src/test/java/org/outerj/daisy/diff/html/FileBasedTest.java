@@ -151,7 +151,9 @@ public class FileBasedTest{
 	@Parameterized.Parameters
     public static List<Object[]> findAllTestDataDirs()
     {
-		File tempRootDir = new File("testdata");
+		//File tempRootDir = new File("testdata");
+        URL tempRootDirURL = Thread.currentThread().getContextClassLoader().getResource("testdata");
+        File tempRootDir = new File(tempRootDirURL.getPath());
 
         return findTestDataDirsRecursive(tempRootDir);
     }

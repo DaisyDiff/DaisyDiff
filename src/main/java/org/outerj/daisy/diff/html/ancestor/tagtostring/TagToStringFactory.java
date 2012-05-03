@@ -94,6 +94,6 @@ public class TagToStringFactory {
         return TagChangeSematic.UNKNOWN;
     }
 
-    private static final String BUNDLE_NAME = "org/outerj/daisy/diff/html/ancestor/tagtostring/messages";
+    private static final String BUNDLE_NAME = "l10n/messages";
 
 }

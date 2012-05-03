@@ -37,7 +37,7 @@ public class HtmlCleaner {
     public void cleanAndParse(InputSource source, ContentHandler consumer)
             throws IOException, SAXException {
         ContentHandler cleanupFilter = filter.xsl(consumer,
-                "org/outerj/daisy/diff/cleanup.xsl");
+                "xslfilter/cleanup.xsl");
         parser.parse(source, cleanupFilter);
     }
 

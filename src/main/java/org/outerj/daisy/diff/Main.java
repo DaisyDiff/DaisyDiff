@@ -116,7 +116,7 @@ public class Main {
             if (htmlDiff) {
 
                 ContentHandler postProcess = htmlOut? filter.xsl(result,
-                        "org/outerj/daisy/diff/htmlheader.xsl"):result;
+                        "xslfilter/htmlheader.xsl"):result;
 
                 Locale locale = Locale.getDefault();
                 String prefix = "diff";
@@ -157,7 +157,7 @@ public class Main {
             } else {
 
                 ContentHandler postProcess = htmlOut? filter.xsl(result,
-                        "org/outerj/daisy/diff/tagheader.xsl"):result;
+                        "xslfilter/tagheader.xsl"):result;
                 postProcess.startDocument();
                 postProcess.startElement("", "diffreport", "diffreport",
                         new AttributesImpl());
