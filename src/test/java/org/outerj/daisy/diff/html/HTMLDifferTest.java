@@ -83,7 +83,7 @@ public class HTMLDifferTest {
 		String newText = "<p id='sample'> This is a blue book</p>";
 		
 		String result = HtmlTestFixture.diff(oldText, newText);
-		assertTrue("Expected a change",result.indexOf("<p id=\"sample\"><span class=\"diff-html-changed\"") > -1);
+		assertTrue("Expected a change",result.indexOf("<p id=\"sample\">\n<span class=\"diff-html-changed\"") > -1);
 	}
 	
 

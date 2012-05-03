@@ -17,11 +17,14 @@ package org.outerj.daisy.diff.html;
 
 import java.io.*;
 
+import org.junit.Ignore;
+
 /**
  * Support for reading files into strings from a given directory.
  * @author TREND
  * @version 04 Jul 2011
  */
+@Ignore
 public class TestHelper {
 	public static final String OLD_NAME = "a.html";
 	public static final String NEW_NAME = "b.html";
