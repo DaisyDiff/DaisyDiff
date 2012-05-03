@@ -19,6 +19,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.*;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -34,22 +35,22 @@ import org.outerj.daisy.diff.BetterParameterized;
  * The directories may be nested until the files <code>a.html</code> and <code>b.html</code> are
  * found, in which case the directory is considered a leaf directory
  * containing actual test data.
- * 
+ *
  * A two-way diff will be performed using the file <code>a.html</code> as the "old"
  * version and the file <code>b.html</code> as the "new" version.
- * 
+ *
  * Optionally a file <code>ancestor.html</code> may be present, which will be used
  * as the ancestor version in a three-way diff. No two-way diffing will
  * be performed in that case.
- * 
+ *
  * The expected results of the two- or three-way diff must be provided
  * in the file <code>expected.html</code>
- * 
+ *
  * A test case fails if the results of the diff does not exactly match the contents
  * of the <code>expected.html</code>
- * 
+ *
  * Note: The files are expected to be UTF-8 encoded.
- * 
+ *
  * @author Carsten Pfeiffer <carsten.pfeiffer@gebit.de>
  * @version 05 Jul 2011
  */
@@ -59,7 +60,7 @@ public class FileBasedTest{
 	 * For creating (missing) test results from current output.
 	 */
 	private static final boolean CREATE_EXPECTED_RESULTS = false;
-	
+
 	/**
 	 * For debugging: If empty, all tests residing in the directory will be executed
 	 * Otherwise, only tests whose directory name is in this set will be executed.
@@ -68,7 +69,7 @@ public class FileBasedTest{
 	static {
 //		ONLY_TESTS.add("table-discontinuous-cellcontents-replaced");
 	}
-	
+
 
     private final File testDirectory;
 
@@ -88,23 +89,23 @@ public class FileBasedTest{
 	public void test() throws Exception {
         File aTestDir = this.testDirectory;
 		TestHelper tempHelper = new TestHelper(aTestDir);
-		
+
 		String tempResults = null;
-		
+
 		if (tempHelper.hasAncestor()) {
 			tempResults = HtmlTestFixture.diff(
-					tempHelper.readContents(tempHelper.getAncestor()), 
-					tempHelper.readContents(tempHelper.getOld()), 
+					tempHelper.readContents(tempHelper.getAncestor()),
+					tempHelper.readContents(tempHelper.getOld()),
 					tempHelper.readContents(tempHelper.getNew()));
 		} else {
 			tempResults = HtmlTestFixture.diff(
-					tempHelper.readContents(tempHelper.getOld()), 
+					tempHelper.readContents(tempHelper.getOld()),
 					tempHelper.readContents(tempHelper.getNew()));
 		}
-		
+
 		tempResults = new StringBuilder(tempResults)
 			.insert(0, tempHelper.getHtmlHeader()).append(tempHelper.getHtmlFooter()).toString();
-		
+
 		String tempExpected = null;
 		try {
 			tempExpected = tempHelper.getExpectedResults();
@@ -157,16 +158,16 @@ public class FileBasedTest{
 
         return findTestDataDirsRecursive(tempRootDir);
     }
-    
+
 	/**
 	 * Returns a list of all directories which contain testdata, that is, a.html, b.html etc.
 	 * @param aRootDir the directory to start with
 	 */
 	private static List<Object[]> findTestDataDirsRecursive(File aRootDir) {
 		final List<File> tempIntermediateDirs = new ArrayList<File>();
-		
+
 		File[] tempTestDataDirs = aRootDir.listFiles(new FileFilter() {
-			
+
 			public boolean accept(File aFile) {
 				if (!aFile.isDirectory() || aFile.getName().startsWith(".")) {
 					return false;
@@ -181,11 +182,11 @@ public class FileBasedTest{
 					// must be an intermediate directory
 					tempIntermediateDirs.add(aFile);
 				}
-				
+
 				return false;
 			}
 		});
-		
+
         List<Object[]> tempResult = new ArrayList<Object[]>();
         for (File tempTestDataDir : tempTestDataDirs)
         {
@@ -202,10 +203,10 @@ public class FileBasedTest{
 			for (File tempFile : tempIntermediateDirs) {
 				tempBuilder.append(tempFile.getAbsolutePath()).append("\n");
 			}
-			
+
 			fail("Directories without testdata found: " + tempBuilder.toString());
 		}
-		
+
 		return tempResult;
 	}
 }
