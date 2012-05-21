@@ -1,6 +1,7 @@
 =====================================================================================
 This is the Nuxeo maintenance branch of daisydiff, forked from tag v1.2.
 The initial commit is a checkout of http://daisydiff.googlecode.com/svn/tags/v1.2/
+Original README content below.
 =====================================================================================
 
                               Daisy Diff 1.2
