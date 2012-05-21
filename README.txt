@@ -1,4 +1,9 @@
-                              Daisy Diff 1.1
+=====================================================================================
+This is the Nuxeo maintenance branch of daisydiff, forked from tag v1.2.
+The initial commit is a checkout of http://daisydiff.googlecode.com/svn/tags/v1.2/
+=====================================================================================
+
+                              Daisy Diff 1.2
 
         This is Daisy Diff, the open source HTML diffing library!
 

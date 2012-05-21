@@ -9,7 +9,7 @@
   <name>Daisydiff</name>
   <description>
     A Java library to compare HTML files.
-    Nuxeo maintenance branch forked from tag 1.2.
+    Nuxeo maintenance branch forked from tag v1.2.
    </description>
 
   <url>http://daisydiff.googlecode.com</url>
