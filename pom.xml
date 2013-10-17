@@ -5,7 +5,7 @@
 
   <groupId>org.outerj.daisy</groupId>
   <artifactId>daisydiff</artifactId>
-  <version>1.2-NX1</version>
+  <version>1.2-NX2</version>
   <name>Daisydiff</name>
   <description>
     A Java library to compare HTML files.
@@ -86,6 +86,57 @@
         <configuration>
           <encoding>UTF-8</encoding>
         </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>shade</id>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <!-- merge services files -->
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"></transformer>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer"></transformer>
+                <!-- <transformer -->
+                <!-- implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer"> -->
+                <!-- <addHeader>false</addHeader> -->
+                <!-- </transformer> -->
+              </transformers>
+              <!-- <createSourcesJar>true</createSourcesJar> -->
+              <!-- <shadeSourcesContent>true</shadeSourcesContent> -->
+              <createDependencyReducedPom>true</createDependencyReducedPom>
+              <!-- <keepDependenciesWithProvidedScope>true</keepDependenciesWithProvidedScope> -->
+              <!-- <promoteTransitiveDependencies>false</promoteTransitiveDependencies> -->
+              <shadedArtifactAttached>true</shadedArtifactAttached>
+              <shadedClassifierName>shaded</shadedClassifierName>
+              <artifactSet>
+                <includes>
+                  <include>org.eclipse.core.runtime:eclipse-core-runtime</include>
+                </includes>
+              </artifactSet>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+              <relocations>
+                <relocation>
+                  <pattern>org/eclipse/core</pattern>
+                  <shadedPattern>hidden/org/eclipse/core</shadedPattern>
+                </relocation>
+              </relocations>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
