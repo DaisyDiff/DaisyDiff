@@ -34,7 +34,7 @@ public class Main {
 
         boolean htmlDiff = true;
         boolean htmlOut = true;
-        String outputFile = "daisydiff.htm";
+        String outputFileName = "daisydiff.htm";
         String[] css = new String[]{};
 
         InputStream oldStream = null;
@@ -44,7 +44,7 @@ public class Main {
             for (int i = 2; i < args.length; i++) {
                 String[] split = args[i].split("=");
                 if (split[0].equalsIgnoreCase("--file")) {
-                    outputFile = split[1];
+                    outputFileName = split[1];
                 } else if (split[0].equalsIgnoreCase("--type")) {
                     if (split[1].equalsIgnoreCase("tag")) {
                         htmlDiff = false;
@@ -62,26 +62,24 @@ public class Main {
                 }
 
             }
-            if (!quietMode){
-              System.out.println("            ______________");
-              System.out.println("           /Daisy Diff 1.2\\");
-              System.out.println("          /________________\\");
-              System.out.println();
-              System.out.println(" -= http://code.google.com/p/daisydiff/ =-");
-              System.out.println("");
-              System.out.println();
-              System.out.println("Comparing documents:");
-              System.out.println("  " + args[0]);
-              System.out.println("and");
-              System.out.println("  " + args[1]);
-              System.out.println();
-              if (htmlDiff)
-                System.out.println("Diff type: html");
-              else
-                System.out.println("Diff type: tag");
-              System.out.println("Writing "+(htmlOut?"html":"xml")+" output to " + outputFile);
+            File outputFile= new File(outputFileName);
+            try {
+                outputFile.createNewFile(); // Fail if outputFileName is malformed. Otherwise result.setResult() below would silently supress an exception (at least with jdk1.8.0_65). Then calling postProcess.endDocument() below would fail with confusing "javax.xml.transform.TransformerException: org.xml.sax.SAXException: setResult() must be called prior to startDocument()."
             }
-
+            catch( IOException e ) {
+                System.err.println( "Filepath " +outputFileName+ " is malformed, or some of its folders don't exist, or you don't have write access." );
+                return;
+            }
+            if (!quietMode){
+              System.out.println("Daisy Diff https://github.com/DaisyDiff/DaisyDiff");
+              System.out.println("Comparing documents: " +args[0]+ " and " +args[1] );
+              System.out.println( "Diff type: " +(
+                htmlDiff
+                ? "html"
+                : "tag"
+              ) );
+              System.out.println("Writing "+(htmlOut?"html":"xml")+" output to " + outputFileName);
+            }
 
             if(css.length>0){
                 if (!quietMode)
@@ -98,7 +96,8 @@ public class Main {
                     .newInstance();
 
             TransformerHandler result = tf.newTransformerHandler();
-            result.setResult(new StreamResult(new File(outputFile)));
+            // If the file path were malformed, then the following
+            result.setResult(new StreamResult(outputFile));
 
 
             if (args[0].startsWith("http://")) {
