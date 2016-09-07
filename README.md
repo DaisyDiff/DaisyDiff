@@ -4,7 +4,7 @@ For more documentation see [daisydiff.github.io](https://daisydiff.github.io/).
 
 # Standalone usage
 ```
-java -jar daisydiff.jar [oldHTML] [newHTML] [optional arguments]
+java -jar daisydiff-1.2-NX4-SNAPSHOT-jar-with-dependencies.jar [oldHTML] [newHTML] [optional arguments]
 ```
 
 Optional Arguments:
@@ -16,9 +16,7 @@ Optional Arguments:
 
 Example:
 ```
-java -jar daisydiff.jar http://web.archive.org/web/20070107145418/http://news.bbc.co.uk/ http://web.archive.org/web/20070107182640/http://news.bbc.co.uk/ --css=http://web.archive.org/web/20070107145418/http://news.bbc.co.uk/nol/shared/css/news_r5.css
-
-java -jar daisydiff.jar http://cocoondev.org/wiki/291-cd/version/15/part/SimpleDocumentContent/data http://cocoondev.org/wiki/291-cd/version/17/part/SimpleDocumentContent/data --css=http://cocoondev.org/resources/skins/daisysite/css/daisy.css --output=xml --file=daisysite.htm
+java -jar daisydiff-1.2-NX4-SNAPSHOT-jar-with-dependencies.jar http://web.archive.org/web/20070107145418/http://news.bbc.co.uk/ http://web.archive.org/web/20070107182640/http://news.bbc.co.uk/ --css=http://web.archive.org/web/20070107145418/http://news.bbc.co.uk/nol/shared/css/news_r5.css
 ```
 
 Requirements: Java 1.5 or 6
