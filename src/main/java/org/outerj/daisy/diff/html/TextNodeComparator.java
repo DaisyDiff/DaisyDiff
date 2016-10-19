@@ -218,7 +218,7 @@ public class TextNodeComparator implements IRangeComparator, Iterable<TextNode> 
      * @param anOutputFormat specifies how this range shall be formatted in the output
      */
     public void markAsDeleted(int start, int end, TextNodeComparator oldComp,
-            int before, ModificationType outputFormat) {
+            int before, int after, ModificationType outputFormat) {
 
         if (end <= start)
             return;
@@ -263,8 +263,8 @@ public class TextNodeComparator implements IRangeComparator, Iterable<TextNode> 
         // Set nextLeaf to the leaf before which the old HTML needs to be
         // inserted
         Node nextLeaf = null;
-        if (before < getRangeCount())
-            nextLeaf = getTextNode(before);
+        if (after < getRangeCount())
+            nextLeaf = getTextNode(after);
 
 
         while (deletedNodes.size() > 0) {
@@ -375,8 +375,8 @@ public class TextNodeComparator implements IRangeComparator, Iterable<TextNode> 
      * @param before
      */
     public void markAsDeleted(int start, int end, TextNodeComparator oldComp,
-            int before) {
-    	markAsDeleted(start, end, oldComp, before, ModificationType.REMOVED);
+            int before, int after) {
+    	markAsDeleted(start, end, oldComp, before, after, ModificationType.REMOVED);
     }
 
     public void expandWhiteSpace() {
