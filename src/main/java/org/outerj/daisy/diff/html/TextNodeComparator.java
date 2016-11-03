@@ -16,6 +16,7 @@
 package org.outerj.daisy.diff.html;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -26,6 +27,7 @@ import org.outerj.daisy.diff.html.ancestor.AncestorComparatorResult;
 import org.outerj.daisy.diff.html.dom.BodyNode;
 import org.outerj.daisy.diff.html.dom.DomTree;
 import org.outerj.daisy.diff.html.dom.Node;
+import org.outerj.daisy.diff.html.dom.TagNode;
 import org.outerj.daisy.diff.html.dom.TextNode;
 import org.outerj.daisy.diff.html.dom.helper.LastCommonParentResult;
 import org.outerj.daisy.diff.html.modification.Modification;
@@ -263,9 +265,40 @@ public class TextNodeComparator implements IRangeComparator, Iterable<TextNode> 
         // Set nextLeaf to the leaf before which the old HTML needs to be
         // inserted
         Node nextLeaf = null;
-        if (after < getRangeCount())
+boolean useAfter = false;
+        
+        if (after < getRangeCount()) {
+            
+            LastCommonParentResult orderResult = getTextNode(before).getLastCommonParent(getTextNode(after));
+            List<TagNode> check = getTextNode(before).getParentTree();
+            Collections.reverse(check);
+            for(TagNode curr : check) {
+                if(curr == orderResult.getLastCommonParent()) {
+                    break;
+                } else if (curr.isBlockLevel()) {
+                    useAfter = true;
+                    break;
+                }
+            }
+            if(!useAfter) {
+                check = getTextNode(after).getParentTree();
+                Collections.reverse(check);
+                for(TagNode curr : check) {
+                    if(curr == orderResult.getLastCommonParent()) {
+                        break;
+                    } else if (curr.isBlockLevel()) {
+                        useAfter = true;
+                        break;
+                    }
+                }
+            }
+        } else {
+            useAfter = false;
+        }
+        if(useAfter)
             nextLeaf = getTextNode(after);
-
+        else if (before < getRangeCount())
+            nextLeaf = getTextNode(before);
 
         while (deletedNodes.size() > 0) {
             LastCommonParentResult prevResult, nextResult;
