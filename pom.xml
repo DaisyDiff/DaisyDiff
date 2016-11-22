@@ -5,7 +5,7 @@
 
   <groupId>org.outerj.daisy</groupId>
   <artifactId>daisydiff</artifactId>
-  <version>1.2-NX4-SNAPSHOT</version>
+  <version>1.2-NX5-SNAPSHOT</version>
   <name>Daisydiff</name>
   <description>
     A Java library to compare HTML files.
