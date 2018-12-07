@@ -109,7 +109,7 @@ public class TestHelper {
      * See http://selite.github.io/DocumentationStandard#generating-raw-links
 	 */
     public String getHtmlHeader() {
-		return "<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"https://cdn.rawgit.com/DaisyDiff/DaisyDiff/5f7a3960f531179f59b0abdf6947efb0b72eaaa6/css/diff.css\"></link></head>\n";
+		return "<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"https://cdn.jsdelivr.net/gh/DaisyDiff/DaisyDiff@5f7a3960f531179f59b0abdf6947efb0b72eaaa6/css/diff.css\"></link></head>\n";
 	}
     public String getHtmlFooter() {
     	return "\n</html>";
