@@ -206,7 +206,13 @@
           </execution>
         </executions>
       </plugin>
-
+      <plugin><!-- As per https://stackoverflow.com/questions/50661648/ -->
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+                <useSystemClassLoader>false</useSystemClassLoader>
+            </configuration>
+      </plugin>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <executions>
@@ -229,7 +235,6 @@
           </archive>
         </configuration>
       </plugin>
-
     </plugins>
   </build>
 
