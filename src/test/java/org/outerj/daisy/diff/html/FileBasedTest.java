@@ -59,7 +59,7 @@ public class FileBasedTest{
 	/**
 	 * For creating (missing) test results from current output.
 	 */
-	private static final boolean CREATE_EXPECTED_RESULTS = false;
+	private static final boolean CREATE_EXPECTED_RESULTS;
 
 	/**
 	 * For debugging: If empty, all tests residing in the directory will be executed
@@ -68,6 +68,12 @@ public class FileBasedTest{
 	private static final Set<String> ONLY_TESTS = new HashSet<String>();
 	static {
 //		ONLY_TESTS.add("table-discontinuous-cellcontents-replaced");
+        String onlyTests= System.getenv("ONLY_TESTS");
+        if( onlyTests!=null && !"".equals(onlyTests) ) {
+            ONLY_TESTS.add( onlyTests );
+        }
+        String createExpected= System.getenv( "CREATE_EXPECTED_RESULTS");
+        CREATE_EXPECTED_RESULTS= createExpected!=null && !"".equals(createExpected) && !"false".equals(createExpected);
 	}
 
 
@@ -137,7 +143,9 @@ public class FileBasedTest{
 	 * @param someContents
 	 */
 	private void writeResultsFile(File aDirectory, String someContents) {
-		String tempName = CREATE_EXPECTED_RESULTS ? TestHelper.EXPECTED_NAME : "_actual_result.html";
+		String tempName = CREATE_EXPECTED_RESULTS
+            ? TestHelper.EXPECTED_NAME
+            : "_actual_result.html";
 		System.err.println("Results file " + TestHelper.EXPECTED_NAME + " not found for " + aDirectory.getAbsolutePath() + ", writing actual diff to " + tempName);
 		try {
 			Writer tempWriter = new OutputStreamWriter(new FileOutputStream(new File(aDirectory, tempName)), TestHelper.ENCODING);
@@ -150,8 +158,7 @@ public class FileBasedTest{
 	}
 
 	@Parameterized.Parameters
-    public static List<Object[]> findAllTestDataDirs()
-    {
+    public static List<Object[]> findAllTestDataDirs() throws IOException {
 		//File tempRootDir = new File("testdata");
         URL tempRootDirURL = Thread.currentThread().getContextClassLoader().getResource("testdata");
         File tempRootDir = new File(tempRootDirURL.getPath());
@@ -163,34 +170,35 @@ public class FileBasedTest{
 	 * Returns a list of all directories which contain testdata, that is, a.html, b.html etc.
 	 * @param aRootDir the directory to start with
 	 */
-	private static List<Object[]> findTestDataDirsRecursive(File aRootDir) {
+	private static List<Object[]> findTestDataDirsRecursive(File aRootDir) throws IOException {
 		final List<File> tempIntermediateDirs = new ArrayList<File>();
 
-		File[] tempTestDataDirs = aRootDir.listFiles(new FileFilter() {
+		File[] tempTestDataDirs = aRootDir.listFiles(
+            new FileFilter() {
+                public boolean accept(File aFile) {
+                    if (!aFile.isDirectory() || aFile.getName().startsWith(".")) {
+                        return false;
+                    }
 
-			public boolean accept(File aFile) {
-				if (!aFile.isDirectory() || aFile.getName().startsWith(".")) {
-					return false;
-				}
+                    if (TestHelper.isTestDataDir(aFile)) {
+                        if (ONLY_TESTS.isEmpty()) {
+                            return true;
+                        }
+                        return ONLY_TESTS.contains(aFile.getName());
+                    } else {
+                        // must be an intermediate directory
+                        tempIntermediateDirs.add(aFile);
+                    }
 
-				if (TestHelper.isTestDataDir(aFile)) {
-					if (ONLY_TESTS.isEmpty()) {
-						return true;
-					}
-					return ONLY_TESTS.contains(aFile.getName());
-				} else {
-					// must be an intermediate directory
-					tempIntermediateDirs.add(aFile);
-				}
-
-				return false;
-			}
-		});
+                    return false;
+                }
+            }
+        );
 
         List<Object[]> tempResult = new ArrayList<Object[]>();
-        for (File tempTestDataDir : tempTestDataDirs)
-        {
-            tempResult.add(new Object[]{ tempTestDataDir});
+        for (File tempTestDataDir : tempTestDataDirs){ 
+            // to match the full path, use tempTestDataDir.getCanonicalPath()
+            tempResult.add( new Object[]{ tempTestDataDir} );
         }
 
 		// recursively find all further test data directories

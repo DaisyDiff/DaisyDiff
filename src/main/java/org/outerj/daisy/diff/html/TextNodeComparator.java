@@ -16,6 +16,7 @@
 package org.outerj.daisy.diff.html;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -26,6 +27,7 @@ import org.outerj.daisy.diff.html.ancestor.AncestorComparatorResult;
 import org.outerj.daisy.diff.html.dom.BodyNode;
 import org.outerj.daisy.diff.html.dom.DomTree;
 import org.outerj.daisy.diff.html.dom.Node;
+import org.outerj.daisy.diff.html.dom.TagNode;
 import org.outerj.daisy.diff.html.dom.TextNode;
 import org.outerj.daisy.diff.html.dom.helper.LastCommonParentResult;
 import org.outerj.daisy.diff.html.modification.Modification;
@@ -218,7 +220,7 @@ public class TextNodeComparator implements IRangeComparator, Iterable<TextNode> 
      * @param anOutputFormat specifies how this range shall be formatted in the output
      */
     public void markAsDeleted(int start, int end, TextNodeComparator oldComp,
-            int before, ModificationType outputFormat) {
+            int before, int after, ModificationType outputFormat) {
 
         if (end <= start)
             return;
@@ -263,9 +265,40 @@ public class TextNodeComparator implements IRangeComparator, Iterable<TextNode> 
         // Set nextLeaf to the leaf before which the old HTML needs to be
         // inserted
         Node nextLeaf = null;
-        if (before < getRangeCount())
+boolean useAfter = false;
+        
+        if (after < getRangeCount()) {
+            
+            LastCommonParentResult orderResult = getTextNode(before).getLastCommonParent(getTextNode(after));
+            List<TagNode> check = getTextNode(before).getParentTree();
+            Collections.reverse(check);
+            for(TagNode curr : check) {
+                if(curr == orderResult.getLastCommonParent()) {
+                    break;
+                } else if (curr.isBlockLevel()) {
+                    useAfter = true;
+                    break;
+                }
+            }
+            if(!useAfter) {
+                check = getTextNode(after).getParentTree();
+                Collections.reverse(check);
+                for(TagNode curr : check) {
+                    if(curr == orderResult.getLastCommonParent()) {
+                        break;
+                    } else if (curr.isBlockLevel()) {
+                        useAfter = true;
+                        break;
+                    }
+                }
+            }
+        } else {
+            useAfter = false;
+        }
+        if(useAfter)
+            nextLeaf = getTextNode(after);
+        else if (before < getRangeCount())
             nextLeaf = getTextNode(before);
-
 
         while (deletedNodes.size() > 0) {
             LastCommonParentResult prevResult, nextResult;
@@ -375,8 +408,8 @@ public class TextNodeComparator implements IRangeComparator, Iterable<TextNode> 
      * @param before
      */
     public void markAsDeleted(int start, int end, TextNodeComparator oldComp,
-            int before) {
-    	markAsDeleted(start, end, oldComp, before, ModificationType.REMOVED);
+            int before, int after) {
+    	markAsDeleted(start, end, oldComp, before, after, ModificationType.REMOVED);
     }
 
     public void expandWhiteSpace() {

@@ -105,11 +105,11 @@ public class TestHelper {
 
 	/**
 	 * Returns the header that is added to every results file and expected results file.
-	 * The header includes an online reference to the diff.css file at googlecode.com.
-	 * Having it as a fixed, static reference eases the comparison.
+	 * The header includes an online reference to the diff.css file at GitHub, but with MIME.
+     * See http://selite.github.io/DocumentationStandard#generating-raw-links
 	 */
     public String getHtmlHeader() {
-		return "<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"http://daisydiff.googlecode.com/files/diff.css\"></link></head>\n";
+		return "<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"https://cdn.rawgit.com/DaisyDiff/DaisyDiff/5f7a3960f531179f59b0abdf6947efb0b72eaaa6/css/diff.css\"></link></head>\n";
 	}
     public String getHtmlFooter() {
     	return "\n</html>";

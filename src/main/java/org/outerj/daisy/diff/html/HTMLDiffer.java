@@ -76,7 +76,7 @@ public class HTMLDiffer implements Differ{
     			// conflicts and changes on the left side
                 if (d.leftLength() > 0) {
                 	ancestorComparator.markAsDeleted(d.leftStart(), d.leftEnd(),
-                			leftComparator, d.ancestorStart(), ModificationType.ADDED);
+                			leftComparator, d.ancestorStart(), d.ancestorEnd(), ModificationType.ADDED);
                 }
     		}
 
@@ -84,7 +84,7 @@ public class HTMLDiffer implements Differ{
     			// conflicts and changes on the right side
                 if (d.rightLength() > 0) {
 	                ancestorComparator.markAsDeleted(d.rightStart(), d.rightEnd(),
-	                		rightComparator, d.ancestorStart(), ModificationType.ADDED);
+	                		rightComparator, d.ancestorStart(), d.ancestorEnd(), ModificationType.ADDED);
                 }
     		}
                 ancestorComparator.markAsNew(d.ancestorStart(), d.ancestorEnd(), ModificationType.REMOVED);
@@ -122,7 +122,6 @@ public class HTMLDiffer implements Differ{
                 settings, leftComparator, rightComparator);
 
         List<RangeDifference> pdifferences = preProcess(differences);
-
         int currentIndexLeft = 0;
         int currentIndexRight = 0;
         for (RangeDifference d : pdifferences) {
@@ -134,7 +133,7 @@ public class HTMLDiffer implements Differ{
             }
             if (d.leftLength() > 0) {
                 rightComparator.markAsDeleted(d.leftStart(), d.leftEnd(),
-                        leftComparator, d.rightStart());
+                        leftComparator, d.rightStart(), d.rightEnd());
             }
             rightComparator.markAsNew(d.rightStart(), d.rightEnd());
 
