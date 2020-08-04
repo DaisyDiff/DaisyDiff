@@ -137,12 +137,23 @@ public class TagNode extends Node implements Iterable<Node> {
     }
 
     /**
-     * checks tags for being semantically equivalent if it's from 
-     * a different tree and for being the same object if it's 
-     * from the same tree as <code>this</code> tag.
+     * Uses strict comparison to check tags for being semantically
+     * equivalent if it's from a different tree and for being the
+     * same object if it's from the same tree as <code>this</code> tag.
      * @param other - tag to compare to
      */
     public boolean isSameTag(TagNode other) {
+        return isSameTag(other, false);
+    }
+
+    /**
+     * checks tags for being semantically equivalent if it's from
+     * a different tree and for being the same object if it's
+     * from the same tree as <code>this</code> tag.
+     * @param other - tag to compare to
+     * @param looseComparison - if true, attribute differences are ignored
+     */
+    public boolean isSameTag(TagNode other, boolean looseComparison) {
         if (other == null) {
 			return false;
 		}
@@ -163,10 +174,10 @@ public class TagNode extends Node implements Iterable<Node> {
 			return false;
 		}
 
-        return equals((TagNode) obj);
+        return equals((TagNode) obj, false);
     }
 
-    private boolean equals(TagNode tagNode) {
+    private boolean equals(TagNode tagNode, boolean looseComparison) {
         if (tagNode == this) {
 			return true;
 		}
@@ -179,7 +190,7 @@ public class TagNode extends Node implements Iterable<Node> {
         //still a chance for being equal
         //if we are in the different tree
         //we should use semantic equivalence instead
-        if (isSimilarTag(tagNode)) {
+        if (isSimilarTag(tagNode, looseComparison)) {
 //            if (getParent() != null && tagNode.getParent() != null) {
 //                int indexInParent = getParent().getIndexOf(this);
 //                int otherIndexInParent = tagNode.getParent().getIndexOf(tagNode);
@@ -222,14 +233,15 @@ public class TagNode extends Node implements Iterable<Node> {
      * The tags may be from different trees. If the tag name and attributes
      * are the same, the result will be <code>true</code>.
      * @param another the tag to compare with
+     * @param looseComparison if true, attribute differences are ignored
      * @return wether this tag is similar to the other node
      */
-    protected boolean isSimilarTag(Node another) {
+    protected boolean isSimilarTag(Node another, boolean looseComparison) {
     	boolean result = false;
     	if (another instanceof TagNode) {
     		TagNode otherNode = (TagNode) another;
     		if (this.getQName().equalsIgnoreCase(otherNode.getQName())) {
-    			result = hasSameAttributes(otherNode.getAttributes());
+    			result = looseComparison || hasSameAttributes(otherNode.getAttributes());
     		}
     	}
 		return result;

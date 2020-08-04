@@ -120,7 +120,8 @@ public abstract class Node {
         int i = 1;
         boolean isSame = true;
         while (isSame && i < myParents.size() && i < otherParents.size()) {
-            if (!myParents.get(i).isSameTag(otherParents.get(i))) {
+            // Use loose comparison for isSameTag call
+            if (!myParents.get(i).isSameTag(otherParents.get(i), true)) {
                 isSame = false;
             } else {
                 // After the while, the index i-1 must be the last common parent
