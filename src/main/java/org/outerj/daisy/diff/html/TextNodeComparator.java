@@ -343,7 +343,7 @@ boolean useAfter = false;
                     .getParent()
                     .getMatchRatio(nextResult.getLastCommonParent());
 
-                    if (distancePrev <= distanceNext) {
+                    if (distancePrev < distanceNext) {
                     	// insert after the previous node
                         prevResult.setLastCommonParentDepth(prevResult
                                 .getLastCommonParentDepth() + 1);
