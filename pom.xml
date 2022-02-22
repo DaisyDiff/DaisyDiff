@@ -3,13 +3,13 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.outerj.daisy</groupId>
+  <groupId>cf.cplace.org.outerj.daisy</groupId>
   <artifactId>daisydiff</artifactId>
-  <version>1.2-NX5-SNAPSHOT</version>
+  <version>1.2-SNAPSHOT</version>
   <name>Daisydiff</name>
   <description>
     A Java library to compare HTML files.
-    Nuxeo maintenance branch forked from tag v1.2.
+    Fork of Nuxeo maintenance branch forked from tag v1.2.
    </description>
 
   <url>http://DaisyDiff.github.io</url>
@@ -52,16 +52,14 @@
   <dependencies>
 
     <dependency>
-      <groupId>org.cyberneko</groupId>
-      <artifactId>html</artifactId>
+      <groupId>org.codelibs</groupId>
+      <artifactId>nekohtml</artifactId>
+      <version>2.1.1</version>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.core.runtime</groupId>
-      <artifactId>eclipse-core-runtime</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>xerces</groupId>
-      <artifactId>xercesImpl</artifactId>
+      <groupId>org.eclipse.platform</groupId>
+      <artifactId>org.eclipse.core.runtime</artifactId>
+      <version>3.24.0</version>
     </dependency>
 
     <!-- Test -->
@@ -109,8 +107,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
+          <source>11</source>
+          <target>11</target>
         </configuration>
       </plugin>
       <plugin>
@@ -118,26 +116,6 @@
         <artifactId>maven-resources-plugin</artifactId>
         <configuration>
           <encoding>UTF-8</encoding>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>allTests</id>
-            <phase>test</phase>
-            <goals>
-              <goal>test</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <environmentVariables>
-            <!-- use ${env.my_parameter} to access environment variables, if needed. Not sure whether they're passed automatically. -->
-            <!-- <ONLY_TESTS>modify_and_append_row</ONLY_TESTS> -->
-            <!--<CREATE_EXPECTED_RESULTS>true</CREATE_EXPECTED_RESULTS> -->
-          </environmentVariables>
         </configuration>
       </plugin>
       <plugin>
@@ -151,67 +129,6 @@
             </manifest>
           </archive>
         </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-shade-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>shade</id>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <!-- merge services files -->
-              <transformers>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"></transformer>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer"></transformer>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>org.outerj.daisy.diff.Main</mainClass>
-                </transformer>
-                <!-- <transformer -->
-                <!-- implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer"> -->
-                <!-- <addHeader>false</addHeader> -->
-                <!-- </transformer> -->
-              </transformers>
-              <!-- <createSourcesJar>true</createSourcesJar> -->
-              <!-- <shadeSourcesContent>true</shadeSourcesContent> -->
-              <createDependencyReducedPom>true</createDependencyReducedPom>
-              <!-- <keepDependenciesWithProvidedScope>true</keepDependenciesWithProvidedScope> -->
-              <!-- <promoteTransitiveDependencies>false</promoteTransitiveDependencies> -->
-              <shadedArtifactAttached>true</shadedArtifactAttached>
-              <shadedClassifierName>shaded</shadedClassifierName>
-              <artifactSet>
-                <includes>
-                  <include>org.eclipse.core.runtime:eclipse-core-runtime</include>
-                </includes>
-              </artifactSet>
-              <filters>
-                <filter>
-                  <artifact>*:*</artifact>
-                  <excludes>
-                    <exclude>META-INF/*.SF</exclude>
-                    <exclude>META-INF/*.DSA</exclude>
-                    <exclude>META-INF/*.RSA</exclude>
-                  </excludes>
-                </filter>
-              </filters>
-              <relocations>
-                <relocation>
-                  <pattern>org/eclipse/core</pattern>
-                  <shadedPattern>hidden/org/eclipse/core</shadedPattern>
-                </relocation>
-              </relocations>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin><!-- As per https://stackoverflow.com/questions/50661648/ -->
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <configuration>
-                <useSystemClassLoader>false</useSystemClassLoader>
-            </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>

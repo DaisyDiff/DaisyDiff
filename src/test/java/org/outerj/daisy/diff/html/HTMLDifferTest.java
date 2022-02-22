@@ -39,82 +39,86 @@ public class HTMLDifferTest {
 		String newText = "<p> This is a big blue book</p>";
 		
 		String result = HtmlTestFixture.diff(oldText, newText);
-		assertTrue("Expected an addition",result.indexOf("<p> This is a <span class=\"diff-html-added\"") > -1);
+		assertTrue("Expected an addition", contains(result, "<p> This is a <span class=\"diff-html-added\""));
 	}
-	
+
 	/**
 	 * Removing a single word.
 	 * @throws Exception something went wrong.
 	 */
-	@Test 
+	@Test
 	public void simpleTextRemove() throws Exception
 	{
 		String oldText = "<p> This is a blue book</p>";
 		String newText = "<p> This is a book</p>";
-		
+
 		String result = HtmlTestFixture.diff(oldText, newText);
-		assertTrue("Expected an removal",result.indexOf("<p> This is a <span class=\"diff-html-removed\"") > -1);
+		assertTrue("Expected an removal",contains(result, "<p> This is a <span class=\"diff-html-removed\""));
 	}
-	
+
 	/**
-	 * Changing a single word. 
+	 * Changing a single word.
 	 * @throws Exception something went wrong.
 	 */
-	@Test 
+	@Test
 	public void simpleTextChange() throws Exception
 	{
 		String oldText = "<p> This is a blue book</p>";
 		String newText = "<p> This is a green book</p>";
-		
+
 		String result = HtmlTestFixture.diff(oldText, newText);
-		assertTrue("Expected an removal",result.indexOf("<p> This is a <span class=\"diff-html-removed\"") > -1);
-		assertTrue("Expected an addition",result.indexOf("blue </span><span class=\"diff-html-added\"") > -1);
+		assertTrue("Expected an removal", contains(result, "<p> This is a <span class=\"diff-html-removed\""));
+		assertTrue("Expected an addition",contains(result, "blue </span><span class=\"diff-html-added\""));
 	}
-	
+
 	/**
 	 * Adding an HTML attribute.
-	 * 
+	 *
 	 * @throws Exception something went wrong.
 	 */
-	@Test 
+	@Test
 	public void simpleAttributeAdd() throws Exception
 	{
 		String oldText = "<p> This is a blue book</p>";
 		String newText = "<p id='sample'> This is a blue book</p>";
-		
+
 		String result = HtmlTestFixture.diff(oldText, newText);
-		assertTrue("Expected a change",result.indexOf("<p id=\"sample\">\n<span class=\"diff-html-changed\"") > -1);
+		assertTrue("Expected a change",contains(result, "<p id=\"sample\">\n<span class=\"diff-html-changed\""));
 	}
-	
+
 
 	/**
 	 * Adding an HTML tag.
-	 * 
+	 *
 	 * @throws Exception something went wrong.
 	 */
-	@Test 
+	@Test
 	public void simpleTagAdd() throws Exception
 	{
 		String oldText = "<p> This is a blue book</p>";
 		String newText = "<p> This is a <b>blue</b> book</p>";
-		
+
 		String result = HtmlTestFixture.diff(oldText, newText);
-		assertTrue("Expected a change",result.indexOf("<p> This is a <b><span class=\"diff-html-changed\"") > -1);
+		assertTrue("Expected a change",contains(result, "<p> This is a <b><span class=\"diff-html-changed\""));
 	}
-	
+
 	/**
 	 * Two text changes.
-	 * 
+	 *
 	 * @throws Exception something went wrong.
 	 */
-	@Test 
+	@Test
 	public void twiceChangeText() throws Exception
 	{
 		String oldText = "<p> This is a blue book</p>";
 		String newText = "<p> This is a red table</p>";
-		
+
 		String result = HtmlTestFixture.diff(oldText, newText);
-		assertTrue("Expected a removal",result.indexOf("<p> This is a <span class=\"diff-html-removed\"") > -1);
-		assertTrue("Expected an addition",result.indexOf("<span class=\"diff-html-added\"") > -1);
+		assertTrue("Expected a removal", contains(result, "<p> This is a <span class=\"diff-html-removed\""));
+		assertTrue("Expected an addition", contains(result, "<span class=\"diff-html-added\""));
+	}
+
+	private boolean contains(String str, String stringToFind) {
+		return str.replace(System.getProperty("line.separator"), "").replaceAll(" +", "").contains(stringToFind.replace(System.getProperty("line.separator"), "").replaceAll(" +", ""));
 	}
 }

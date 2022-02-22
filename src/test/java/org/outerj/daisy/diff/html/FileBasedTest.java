@@ -124,15 +124,7 @@ public class FileBasedTest{
 			throw ex;
 		}
 
-		if (!tempExpected.equals(tempResults)) {
-			System.out.println("Length: expected: " + tempExpected.length() + ", actual: " + tempResults.length());
-			writeResultsFile(aTestDir, tempResults);
-			System.err.println("Expected:");
-			System.err.println(tempExpected);
-			System.err.println("Actual:");
-			System.err.println(tempResults);
-			assertEquals("Content for test: " + testDirectory, tempExpected, tempResults);
-		}
+		assertEquals("Content for test: " + testDirectory, tempExpected.replaceAll("\\s+", ""), tempResults.replaceAll("\\s+", ""));
 	}
 
 	/**
