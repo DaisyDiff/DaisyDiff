@@ -1,3 +1,14 @@
+# Document Control / Repository Information
+Item | Value 
+--- | ---
+Owner |	Joachim Lengacher, Daniel Kreck
+Team 	|   
+Project|    none
+Parent |	none
+Developed by 	| collaborationFactory
+Description |   A fork of DaisyDiff with custom modifications and updates.
+
+
 This is a maintenance project of DaisyDiff in Java. The initial commit is a checkout of version 1.2 of [old DaisyDiff project](https://code.google.com/archive/p/daisydiff).
 
 For more documentation see [daisydiff.github.io](https://daisydiff.github.io/).
