@@ -105,7 +105,7 @@ public final class RangeDifferencer {
     public static RangeDifference[] findDifferences(IProgressMonitor pm,
             LCSSettings settings, IRangeComparator left, IRangeComparator right) {
         if (!settings.isUseGreedyMethod()) {
-            return OldDifferencer.findDifferences(pm, left, right);
+            return OldDifferencer.findDifferences(pm, settings, left, right);
         }
         return RangeComparatorLCS.findDifferences(pm, settings, left, right);
     }

@@ -20,6 +20,8 @@ public class LCSSettings {
     // the value of N*M when to start binding the run time
     private double tooLong = 10000000.0;
 
+    private long diffLimit;
+
     private double powLimit = 1.5;
 
     private boolean useGreedyMethod = false;
@@ -32,6 +34,14 @@ public class LCSSettings {
     // the value of N*M when to start binding the run time
     public void setTooLong(double too_long) {
         this.tooLong = too_long;
+    }
+
+    public long getDiffLimit() {
+        return diffLimit;
+    }
+
+    public void setDiffLimit(long diffLimit) {
+        this.diffLimit = diffLimit;
     }
 
     public double getPowLimit() {
