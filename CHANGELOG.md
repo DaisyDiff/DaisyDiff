@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/SchweizerischeBundesbahnen/html5diff/compare/v1.1.0...v1.2.0) (2024-03-14)
+
+
+### Features
+
+* Fix maven deploy using profile. ([#26](https://github.com/SchweizerischeBundesbahnen/html5diff/issues/26)) ([ed55a97](https://github.com/SchweizerischeBundesbahnen/html5diff/commit/ed55a97301eea777ec8003d09a9265c35944f6c1))
+
 ## [1.1.0](https://github.com/SchweizerischeBundesbahnen/html5diff/compare/v1.0.0...v1.1.0) (2024-03-14)
 
 
