@@ -1,0 +1,66 @@
+---
+name: maven-release
+on:
+  push:
+    branches: [main, feature/**, renovate/**]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17 for deploy to S3 bucket
+        uses: actions/setup-java@v4
+        with:
+          distribution: adopt
+          java-version: 17
+          cache: maven
+      - uses: whelk-io/maven-settings-xml-action@v22
+        with:
+          repositories: >
+            [
+              {
+                "id": "repsy",
+                "name": "repsy.io",
+                "url": "https://repo.repsy.io/mvn/sbb/sbb",
+                "releases": {
+                  "enabled": "true",
+                  "updatePolicy": "never"
+                }
+              }
+            ]
+          servers: >
+            [
+              {
+                "id": "github",
+                "username": "${env.GITHUB_ACTOR}",
+                "password": "${env.GITHUB_TOKEN}"
+              },
+              {
+                "id": "repsy",
+                "username": "${{ secrets.CH_SBB_POLARION_REPSY_USERNAME }}",
+                "password": "${{ secrets.CH_SBB_POLARION_REPSY_PASSWORD }}"
+              }
+            ]
+          active_profiles: >
+            [
+              "github"
+            ]
+      - name: Print settings.xml
+        run: cat /home/runner/.m2/settings.xml
+      - name: Build with Maven
+        run: mvn --batch-mode clean package
+      - name: Extract artefact version
+        id: artefact_version
+        run: echo ::set-output name=version::$(mvn help:evaluate -Dexpression=project.version
+          -q -DforceStdout)
+      - name: Publish to repsy.io
+        if: ${{ !endsWith(steps.artefact_version.outputs.version, '-SNAPSHOT') }}
+        run: mvn --batch-mode deploy -PrepsyDeploy
+      - name: Publish to GitHub Packages
+        if: ${{ !endsWith(steps.artefact_version.outputs.version, '-SNAPSHOT') }}
+        run: mvn --batch-mode deploy -PgithubDeploy
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

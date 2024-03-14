@@ -1,0 +1,30 @@
+---
+default_install_hook_types: [pre-commit, commit-msg]
+repos:
+  - repo: https://github.com/lyz-code/yamlfix
+    rev: 1.16.0
+    hooks:
+      - id: yamlfix
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: check-merge-conflict
+      - id: trailing-whitespace
+      - id: check-xml
+      - id: check-json
+      - id: check-yaml
+      - id: no-commit-to-branch
+      - id: mixed-line-ending
+  - repo: https://github.com/zricethezav/gitleaks
+    rev: v8.18.0
+    hooks:
+      - id: gitleaks
+  - repo: https://github.com/grigoriev/pre-commit-check-git-user
+    rev: v0.9.0
+    hooks:
+      - id: check-git-config-user-email
+        args: [--templates, ^\S+\.\S+@sbb\.ch$]
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v3.15.0
+    hooks:
+      - id: commitizen
