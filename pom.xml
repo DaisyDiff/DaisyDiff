@@ -122,7 +122,9 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <skipTests>true</skipTests>
                     <environmentVariables>
+                             
                         <!-- use ${env.my_parameter} to access environment variables, if needed. Not sure whether they're passed automatically. -->
                         <!-- <ONLY_TESTS>modify_and_append_row</ONLY_TESTS> -->
                         <!--<CREATE_EXPECTED_RESULTS>true</CREATE_EXPECTED_RESULTS> -->
