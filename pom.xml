@@ -55,6 +55,24 @@
         </dependency>
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>repsyDeploy</id>
+            <distributionManagement>
+                <repository>
+                    <id>repsy</id>
+                    <name>repsy.io</name>
+                    <url>https://repo.repsy.io/mvn/sbb/sbb</url>
+                </repository>
+                <snapshotRepository>
+                    <id>repsy</id>
+                    <name>repsy.io</name>
+                    <url>https://repo.repsy.io/mvn/sbb/sbb</url>
+                </snapshotRepository>
+            </distributionManagement>
+        </profile>
+    </profiles>
+
     <build>
         <pluginManagement>
             <plugins>
