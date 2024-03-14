@@ -29,7 +29,7 @@ import org.outerj.daisy.diff.output.TextDiffer;
  * internally on a second iteration. The results are processed as to combine
  * small subsequent changes in to larger changes.
  */
-public class TagDiffer implements TextDiffer{
+public class TagDiffer implements TextDiffer {
 
     private TextDiffOutput output;
 
@@ -81,8 +81,8 @@ public class TagDiffer implements TextDiffer{
     }
 
     private void parseNoChange(int beginLeft, int endLeft, int beginRight,
-            int endRight, IAtomSplitter leftComparator,
-            IAtomSplitter rightComparator) throws Exception {
+                               int endRight, IAtomSplitter leftComparator,
+                               IAtomSplitter rightComparator) throws Exception {
 
         StringBuilder sb = new StringBuilder();
 
@@ -94,9 +94,9 @@ public class TagDiffer implements TextDiffer{
 
             while (beginLeft < endLeft
                     && !rightComparator.getAtom(beginRight)
-                            .hasInternalIdentifiers()
+                    .hasInternalIdentifiers()
                     && !leftComparator.getAtom(beginLeft)
-                            .hasInternalIdentifiers()) {
+                    .hasInternalIdentifiers()) {
                 sb.append(rightComparator.getAtom(beginRight).getFullText());
                 beginRight++;
                 beginLeft++;
@@ -150,7 +150,7 @@ public class TagDiffer implements TextDiffer{
     }
 
     private List<RangeDifference> preProcess(RangeDifference[] differences,
-            IAtomSplitter leftComparator) {
+                                             IAtomSplitter leftComparator) {
 
         List<RangeDifference> newRanges = new LinkedList<RangeDifference>();
 
@@ -178,11 +178,11 @@ public class TagDiffer implements TextDiffer{
                         bridgelength = 2;
                 }
 
-				while (temp < differences[i + 1].leftStart()
-						&& (leftComparator.getAtom(temp) instanceof DelimiterAtom || (bridgelength-- > 0))) {
+                while (temp < differences[i + 1].leftStart()
+                        && (leftComparator.getAtom(temp) instanceof DelimiterAtom || (bridgelength-- > 0))) {
 
-					temp++;
-				}
+                    temp++;
+                }
                 if (temp == differences[i + 1].leftStart()) {
                     leftEnd = differences[i + 1].leftEnd();
                     rightEnd = differences[i + 1].rightEnd();
@@ -206,7 +206,7 @@ public class TagDiffer implements TextDiffer{
     }
 
     private List<RangeDifference> preProcess(RangeDifference[] differences,
-            int span) {
+                                             int span) {
 
         List<RangeDifference> newRanges = new LinkedList<RangeDifference>();
 

@@ -32,28 +32,28 @@ public class TagToString {
     protected TagChangeSematic sem;
 
     private ResourceBundle bundle;
-    
+
     private HtmlLayoutChange htmlLayoutChange = null;
 
     protected TagToString(TagNode node, TagChangeSematic sem,
-            ResourceBundle bundle) {
+                          ResourceBundle bundle) {
         this.node = node;
         this.sem = sem;
         this.bundle = bundle;
-        
+
     }
 
     public String getDescription() {
-    	
+
         return getString("diff-" + node.getQName());
-        
+
     }
 
     public void getRemovedDescription(ChangeText txt) {
-    	htmlLayoutChange = new HtmlLayoutChange();
-    	htmlLayoutChange.setEndingTag(node.getEndTag());
-    	htmlLayoutChange.setOpeningTag(node.getOpeningTag());
-    	htmlLayoutChange.setType(Type.TAG_REMOVED);
+        htmlLayoutChange = new HtmlLayoutChange();
+        htmlLayoutChange.setEndingTag(node.getEndTag());
+        htmlLayoutChange.setOpeningTag(node.getOpeningTag());
+        htmlLayoutChange.setType(Type.TAG_REMOVED);
         if (sem == TagChangeSematic.MOVED) {
             txt.addText(getMovedOutOf() + " " + getArticle().toLowerCase()
                     + " ");
@@ -76,10 +76,10 @@ public class TagToString {
     }
 
     public void getAddedDescription(ChangeText txt) {
-    	htmlLayoutChange = new HtmlLayoutChange();
-    	htmlLayoutChange.setEndingTag(node.getEndTag());
-    	htmlLayoutChange.setOpeningTag(node.getOpeningTag());
-    	htmlLayoutChange.setType(Type.TAG_ADDED);
+        htmlLayoutChange = new HtmlLayoutChange();
+        htmlLayoutChange.setEndingTag(node.getEndTag());
+        htmlLayoutChange.setOpeningTag(node.getOpeningTag());
+        htmlLayoutChange.setType(Type.TAG_ADDED);
         if (sem == TagChangeSematic.MOVED) {
             txt.addText(getMovedTo() + " " + getArticle().toLowerCase() + " ");
             txt.addHtml("<b>");
@@ -140,7 +140,7 @@ public class TagToString {
                     + getAnd().toLowerCase()
                     + " "
                     + translateArgument(attributes.getQName(attributes
-                            .getLength() - 1)) + " "
+                    .getLength() - 1)) + " "
                     + attributes.getValue(attributes.getLength() - 1));
         }
     }
@@ -187,13 +187,12 @@ public class TagToString {
         }
     }
 
-	/**
-	 * @return the htmlChange
-	 */
-	public HtmlLayoutChange getHtmlLayoutChange() {
-		return htmlLayoutChange;
-	}
-    
-    
+    /**
+     * @return the htmlChange
+     */
+    public HtmlLayoutChange getHtmlLayoutChange() {
+        return htmlLayoutChange;
+    }
+
 
 }

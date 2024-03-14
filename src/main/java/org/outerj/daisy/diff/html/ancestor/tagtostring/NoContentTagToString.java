@@ -24,7 +24,7 @@ import org.outerj.daisy.diff.html.dom.TagNode;
 public class NoContentTagToString extends TagToString {
 
     protected NoContentTagToString(TagNode node, TagChangeSematic sem,
-            ResourceBundle bundle) {
+                                   ResourceBundle bundle) {
         super(node, sem, bundle);
     }
 

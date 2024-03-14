@@ -102,7 +102,7 @@ class MergeCharacterEventsHandler implements ContentHandler {
     }
 
     public void startElement(String namespaceURI, String localName,
-            String qName, Attributes atts) throws SAXException {
+                             String qName, Attributes atts) throws SAXException {
         flushCharacters();
         consumer.startElement(namespaceURI, localName, qName, atts);
     }

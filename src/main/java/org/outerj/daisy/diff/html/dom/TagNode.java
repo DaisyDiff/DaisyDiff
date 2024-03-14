@@ -24,6 +24,7 @@ import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * Node that can contain other nodes. Represents an HTML tag.
+ *
  * @version 18 Jun 2011
  */
 public class TagNode extends Node implements Iterable<Node> {
@@ -47,60 +48,61 @@ public class TagNode extends Node implements Iterable<Node> {
     }
 
     /**
-     * appends the provided node to the collection of children if 
+     * appends the provided node to the collection of children if
      * <code>this</code> node is set as the parameter's parent.
      * This method is used in the <code>Node</code>'s constructor
-     * @param node - child to add must have 
-     * <code>this</code> node set as its parent.
+     *
+     * @param node - child to add must have
+     *             <code>this</code> node set as its parent.
      * @throws java.lang.IllegalStateException - if the parameter
-     * has different parent than <code>this</code> node.
+     *                                         has different parent than <code>this</code> node.
      */
     public void addChild(Node node) {
         if (node.getParent() != this) {
-			throw new IllegalStateException(
+            throw new IllegalStateException(
                     "The new child must have this node as a parent.");
-		}
+        }
         children.add(node);
     }
 
     @Override
-    protected void setRoot(TagNode root)
-    {
+    protected void setRoot(TagNode root) {
         super.setRoot(root);
-        for (Node child : children)
-        {
+        for (Node child : children) {
             child.setRoot(root);
         }
     }
 
     /**
      * If the provided parameter is in the same tree with
-     * <code>this</code> object then this method fetches 
-     * index of the parameter object in the children collection. 
+     * <code>this</code> object then this method fetches
+     * index of the parameter object in the children collection.
      * If the parameter is from a different tree, then this method
-     * attempts to return the index of first semantically equivalent 
+     * attempts to return the index of first semantically equivalent
      * node to the parameter.
+     *
      * @param child - the template of a tag we need an index for.
-     * @return the index of first semantically equivalent child 
+     * @return the index of first semantically equivalent child
      * or -1 if couldn't find one
      */
     public int getIndexOf(Node child) {
         return children.indexOf(child);
     }
-    
+
     /**
-     * Inserts provided node in the collection of children at the specified index 
+     * Inserts provided node in the collection of children at the specified index
      * if <code>this</code> node is set as a parent for the parameter.
+     *
      * @param index - desired position among the children
-     * @param node - the node to insert as a child. 
+     * @param node  - the node to insert as a child.
      * @throws java.lang.IllegalStateException - if the provided node has
-     * different parent from <code>this</code> node.
+     *                                         different parent from <code>this</code> node.
      */
     public void addChild(int index, Node node) {
         if (node.getParent() != this) {
-			throw new IllegalStateException(
+            throw new IllegalStateException(
                     "The new child must have this node as a parent.");
-		}
+        }
         children.add(index, node);
     }
 
@@ -117,15 +119,15 @@ public class TagNode extends Node implements Iterable<Node> {
     }
 
     /**
-     * @return number of elements in the children collection or 0 if 
+     * @return number of elements in the children collection or 0 if
      * the collection is <code>null</code>
      */
     public int getNbChildren() {
-    	if (children == null){
-    		return 0;
-    	} else {
-    		return children.size();
-    	}
+        if (children == null) {
+            return 0;
+        } else {
+            return children.size();
+        }
     }
 
     public String getQName() {
@@ -137,44 +139,45 @@ public class TagNode extends Node implements Iterable<Node> {
     }
 
     /**
-     * checks tags for being semantically equivalent if it's from 
-     * a different tree and for being the same object if it's 
+     * checks tags for being semantically equivalent if it's from
+     * a different tree and for being the same object if it's
      * from the same tree as <code>this</code> tag.
+     *
      * @param other - tag to compare to
      */
     public boolean isSameTag(TagNode other) {
         if (other == null) {
-			return false;
-		}
+            return false;
+        }
         return equals(other);
     }
 
     /**
-     * Considers tags from different trees equal 
+     * Considers tags from different trees equal
      * if they have same name and equivalent attributes.
      * No attention paid to the content (children) of the tag.
-     * Considers tags from the same tree equal if it is 
+     * Considers tags from the same tree equal if it is
      * the same object.
+     *
      * @param obj - object to compare to.
      */
     @Override
     public boolean equals(Object obj) {
-    	if (!(obj instanceof TagNode)) {
-			return false;
-		}
+        if (!(obj instanceof TagNode)) {
+            return false;
+        }
 
         return equals((TagNode) obj);
     }
 
     private boolean equals(TagNode tagNode) {
         if (tagNode == this) {
-			return true;
-		}
+            return true;
+        }
 
-        if (this.getRoot() == tagNode.getRoot())
-		 {
-			return false; // Not the same and in the same tree so not equal
-		}
+        if (this.getRoot() == tagNode.getRoot()) {
+            return false; // Not the same and in the same tree so not equal
+        }
 
         //still a chance for being equal
         //if we are in the different tree
@@ -196,24 +199,22 @@ public class TagNode extends Node implements Iterable<Node> {
 //            }
             return true; // similar enough to be equal
         }
-	return false;
+        return false;
     }
 
-    private boolean hasSameAttributes(final Attributes otherAttributes)
-    {
+    private boolean hasSameAttributes(final Attributes otherAttributes) {
         if (otherAttributes == null) {
-			return false;
-		}
+            return false;
+        }
         if (attributesEqualityTests.get(otherAttributes) != null) {
-			return attributesEqualityTests.get(otherAttributes);
-		}
+            return attributesEqualityTests.get(otherAttributes);
+        }
         boolean result = getAttributesMap().hasSameAttributes(otherAttributes);
         attributesEqualityTests.put(otherAttributes, result);
         return result;
     }
 
-    private AttributesMap getAttributesMap()
-    {
+    private AttributesMap getAttributesMap() {
         return new AttributesMap(getAttributes());
     }
 
@@ -221,39 +222,41 @@ public class TagNode extends Node implements Iterable<Node> {
      * Returns <code>true</code> if this tag is similar to the given other tag.
      * The tags may be from different trees. If the tag name and attributes
      * are the same, the result will be <code>true</code>.
+     *
      * @param another the tag to compare with
      * @return wether this tag is similar to the other node
      */
     protected boolean isSimilarTag(Node another) {
-    	boolean result = false;
-    	if (another instanceof TagNode) {
-    		TagNode otherNode = (TagNode) another;
-    		if (this.getQName().equalsIgnoreCase(otherNode.getQName())) {
-    			result = hasSameAttributes(otherNode.getAttributes());
-    		}
-    	}
-		return result;
+        boolean result = false;
+        if (another instanceof TagNode) {
+            TagNode otherNode = (TagNode) another;
+            if (this.getQName().equalsIgnoreCase(otherNode.getQName())) {
+                result = hasSameAttributes(otherNode.getAttributes());
+            }
+        }
+        return result;
     }
 
     /**
      * Since we only consider so much information of the TagNode in
-     * <code>equals</code> method, we need to re-write 
-     * <code>hashCode</code> method to correspond. Otherwise 
+     * <code>equals</code> method, we need to re-write
+     * <code>hashCode</code> method to correspond. Otherwise
      * <code>HashTable</code>s and <code>HashMaps</code> might
      * behave unexpectedly.
      */
     @Override
-    public int hashCode(){
-    	final int simple = 29;
-    	int result = this.getQName().hashCode();
+    public int hashCode() {
+        final int simple = 29;
+        int result = this.getQName().hashCode();
         AttributesMap attrs = getAttributesMap();
-        result = result*simple + attrs.hashCode();
-    	return result;
+        result = result * simple + attrs.hashCode();
+        return result;
     }
-    
+
     /**
      * Produces <code>String</code> for the opening HTML tag for this node.
      * Includes the attributes. This probably doesn't work for image tag.
+     *
      * @return the <code>String</code> representation of the corresponding
      * opening HTML tag.
      */
@@ -276,13 +279,13 @@ public class TagNode extends Node implements Iterable<Node> {
     }
 
     /**
-     * <p> This recursive method considers a descendant deleted if all its 
-     * children had <code>TextNode</code>s that now are marked as removed 
-     * with the provided id. If all children of a descendant is considered 
-     * deleted, only that descendant is kept in the collection of the 
-     * deleted nodes, and its children are removed from the collection 
+     * <p> This recursive method considers a descendant deleted if all its
+     * children had <code>TextNode</code>s that now are marked as removed
+     * with the provided id. If all children of a descendant is considered
+     * deleted, only that descendant is kept in the collection of the
+     * deleted nodes, and its children are removed from the collection
      * of the deleted nodes.<br>
-     * The HTML tag nodes that never had any text content are never considered 
+     * The HTML tag nodes that never had any text content are never considered
      * removed </p>
      * <p>It actually might have nothing to do with being really deleted, because
      * the element might be kept after its text content was deleted.<br>
@@ -297,8 +300,8 @@ public class TagNode extends Node implements Iterable<Node> {
 
         //no-content tags are never included in the set
         if (children.size() == 0) {
-			return nodes;
-		}
+            return nodes;
+        }
 
         //by default we think that all kids are in the deleted set
         //until we prove otherwise
@@ -309,7 +312,7 @@ public class TagNode extends Node implements Iterable<Node> {
             nodes.addAll(childrenChildren);
             if (!hasNotDeletedDescendant
                     && !(childrenChildren.size() == 1 && childrenChildren
-                            .contains(child))) {
+                    .contains(child))) {
                 // This child is not entirely deleted
                 hasNotDeletedDescendant = true;
             }
@@ -328,29 +331,30 @@ public class TagNode extends Node implements Iterable<Node> {
     }
 
     /**
-     * Attempts to create 2 <code>TagNode</code>s with 
+     * Attempts to create 2 <code>TagNode</code>s with
      * the same name and attributes as the original <code>this</code> node.
      * All children preceding split parameter are placed into the left part,
-     * all children following the split parameter are placed into 
-     * the right part. Placement of the split node is determined by 
+     * all children following the split parameter are placed into
+     * the right part. Placement of the split node is determined by
      * includeLeft flag parameter. The newly created nodes are only added to
      * the parent of <code>this</code> node if they have some children.
      * The original <code>this</code> node is removed afterwards. The process
      * proceeds recursively hiking up the tree until the "parent" node is
      * reached. "Parent" node will not be touched.
-     * This method is used when the parent tags of a deleted 
+     * This method is used when the parent tags of a deleted
      * <code>TextNode</code> can no longer be found in the new doc. (means
-     * they either has been deleted or changed arguments). The "parent" 
+     * they either has been deleted or changed arguments). The "parent"
      * parameter in that case is the deepest common parent between the
      * deleted node and its surrounding remaining siblings.
-     * @param parent - the node that should not participate in split operation
-     * (where the split operation stops)
-     * @param split - the node-divider to divide children among splitted parts
-     * @param includeLeft - if <code>true</code> the "split" node will be 
-     * included in the left part.
-     * @return <code>true</code> if single <code>this</code> node 
+     *
+     * @param parent      - the node that should not participate in split operation
+     *                    (where the split operation stops)
+     * @param split       - the node-divider to divide children among splitted parts
+     * @param includeLeft - if <code>true</code> the "split" node will be
+     *                    included in the left part.
+     * @return <code>true</code> if single <code>this</code> node
      * was substituted with 2 new similar nodes with original children
-     * divided among them. 
+     * divided among them.
      */
     public boolean splitUntill(TagNode parent, Node split, boolean includeLeft) {
         boolean splitOccured = false;
@@ -382,27 +386,27 @@ public class TagNode extends Node implements Iterable<Node> {
                 i++;
             }
             if (part1.getNbChildren() > 0) {
-				getParent().addChild(getParent().getIndexOf(this), part1);
-			}
+                getParent().addChild(getParent().getIndexOf(this), part1);
+            }
 
             if (part2.getNbChildren() > 0) {
-				getParent().addChild(getParent().getIndexOf(this), part2);
-			}
+                getParent().addChild(getParent().getIndexOf(this), part2);
+            }
 
             if (part1.getNbChildren() > 0 && part2.getNbChildren() > 0) {
                 splitOccured = true;
             }
-            
+
             //since split isn't meant for no-children tags,
             //we won't have a case where we removed this and did not
             //substitute it with anything
             getParent().removeChild(this);
 
             if (includeLeft) {
-				getParent().splitUntill(parent, part1, includeLeft);
-			} else {
-				getParent().splitUntill(parent, part2, includeLeft);
-			}
+                getParent().splitUntill(parent, part1, includeLeft);
+            } else {
+                getParent().splitUntill(parent, part2, includeLeft);
+            }
         }
         return splitOccured;
 
@@ -414,6 +418,7 @@ public class TagNode extends Node implements Iterable<Node> {
 
     //block tags
     private static Set<String> blocks = new HashSet<String>();
+
     static {
         blocks.add("html");
         blocks.add("body");
@@ -526,8 +531,8 @@ public class TagNode extends Node implements Iterable<Node> {
     @Override
     public Node getLeftMostChild() {
         if (getNbChildren() < 1) {
-			return this;
-		}
+            return this;
+        }
         Node child = getChild(0);
         return child.getLeftMostChild();
 
@@ -536,8 +541,8 @@ public class TagNode extends Node implements Iterable<Node> {
     @Override
     public Node getRightMostChild() {
         if (getNbChildren() < 1) {
-			return this;
-		}
+            return this;
+        }
         Node child = getChild(getNbChildren() - 1);
         return child.getRightMostChild();
     }

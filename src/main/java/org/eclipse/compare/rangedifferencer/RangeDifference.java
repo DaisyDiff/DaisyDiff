@@ -25,12 +25,14 @@ package org.eclipse.compare.rangedifferencer;
  * an entity represents a line in a document, the start index would be a line
  * number and the count would be in lines.
  * </p>
- * 
+ *
  * @see RangeDifferencer
  */
 public class RangeDifference {
 
-    /** Two-way change constant indicating no change. */
+    /**
+     * Two-way change constant indicating no change.
+     */
     public final static int NOCHANGE = 0;
 
     /**
@@ -39,13 +41,19 @@ public class RangeDifference {
      */
     public final static int CHANGE = 2;
 
-    /** Three-way change constant indicating a change in both right and left. */
+    /**
+     * Three-way change constant indicating a change in both right and left.
+     */
     public final static int CONFLICT = 1;
 
-    /** Three-way change constant indicating a change in right. */
+    /**
+     * Three-way change constant indicating a change in right.
+     */
     public final static int RIGHT = 2;
 
-    /** Three-way change constant indicating a change in left. */
+    /**
+     * Three-way change constant indicating a change in left.
+     */
     public final static int LEFT = 3;
 
     /**
@@ -54,7 +62,9 @@ public class RangeDifference {
      */
     public final static int ANCESTOR = 4;
 
-    /** Constant indicating an unknown change kind. */
+    /**
+     * Constant indicating an unknown change kind.
+     */
     public final static int ERROR = 5;
 
     /**
@@ -77,9 +87,8 @@ public class RangeDifference {
 
     /**
      * Creates a new range difference with the given change kind.
-     * 
-     * @param changeKind
-     *                the kind of change
+     *
+     * @param changeKind the kind of change
      */
     /* package */RangeDifference(int changeKind) {
         fKind = changeKind;
@@ -88,20 +97,15 @@ public class RangeDifference {
     /**
      * Creates a new <code>RangeDifference</code> with the given change kind
      * and left and right ranges.
-     * 
-     * @param kind
-     *                the kind of change
-     * @param rightStart
-     *                start index of entity on right side
-     * @param rightLength
-     *                number of entities on right side
-     * @param leftStart
-     *                start index of entity on left side
-     * @param leftLength
-     *                number of entities on left side
+     *
+     * @param kind        the kind of change
+     * @param rightStart  start index of entity on right side
+     * @param rightLength number of entities on right side
+     * @param leftStart   start index of entity on left side
+     * @param leftLength  number of entities on left side
      */
     public RangeDifference(int kind, int rightStart, int rightLength,
-            int leftStart, int leftLength) {
+                           int leftStart, int leftLength) {
         fKind = kind;
         fRightStart = rightStart;
         fRightLength = rightLength;
@@ -112,24 +116,17 @@ public class RangeDifference {
     /**
      * Creates a new <code>RangeDifference</code> with the given change kind
      * and left, right, and ancestor ranges.
-     * 
-     * @param kind
-     *                the kind of change
-     * @param rightStart
-     *                start index of entity on right side
-     * @param rightLength
-     *                number of entities on right side
-     * @param leftStart
-     *                start index of entity on left side
-     * @param leftLength
-     *                number of entities on left side
-     * @param ancestorStart
-     *                start index of entity on ancestor side
-     * @param ancestorLength
-     *                number of entities on ancestor side
+     *
+     * @param kind           the kind of change
+     * @param rightStart     start index of entity on right side
+     * @param rightLength    number of entities on right side
+     * @param leftStart      start index of entity on left side
+     * @param leftLength     number of entities on left side
+     * @param ancestorStart  start index of entity on ancestor side
+     * @param ancestorLength number of entities on ancestor side
      */
     public RangeDifference(int kind, int rightStart, int rightLength,
-            int leftStart, int leftLength, int ancestorStart, int ancestorLength) {
+                           int leftStart, int leftLength, int ancestorStart, int ancestorLength) {
         this(kind, rightStart, rightLength, leftStart, leftLength);
         lAncestorStart = ancestorStart;
         lAncestorLength = ancestorLength;
@@ -137,11 +134,11 @@ public class RangeDifference {
 
     /**
      * Returns the kind of difference.
-     * 
+     *
      * @return the kind of difference, one of <code>NOCHANGE</code>,
-     *         <code>CHANGE</code>, <code>LEFT</code>, <code>RIGHT</code>,
-     *         <code>ANCESTOR</code>, <code>CONFLICT</code>,
-     *         <code>ERROR</code>
+     * <code>CHANGE</code>, <code>LEFT</code>, <code>RIGHT</code>,
+     * <code>ANCESTOR</code>, <code>CONFLICT</code>,
+     * <code>ERROR</code>
      */
     public int kind() {
         return fKind;
@@ -149,7 +146,7 @@ public class RangeDifference {
 
     /**
      * Returns the start index of the entity range on the ancestor side.
-     * 
+     *
      * @return the start index of the entity range on the ancestor side
      */
     public int ancestorStart() {
@@ -158,7 +155,7 @@ public class RangeDifference {
 
     /**
      * Returns the number of entities on the ancestor side.
-     * 
+     *
      * @return the number of entities on the ancestor side
      */
     public int ancestorLength() {
@@ -167,7 +164,7 @@ public class RangeDifference {
 
     /**
      * Returns the end index of the entity range on the ancestor side.
-     * 
+     *
      * @return the end index of the entity range on the ancestor side
      */
     public int ancestorEnd() {
@@ -176,7 +173,7 @@ public class RangeDifference {
 
     /**
      * Returns the start index of the entity range on the right side.
-     * 
+     *
      * @return the start index of the entity range on the right side
      */
     public int rightStart() {
@@ -185,7 +182,7 @@ public class RangeDifference {
 
     /**
      * Returns the number of entities on the right side.
-     * 
+     *
      * @return the number of entities on the right side
      */
     public int rightLength() {
@@ -194,7 +191,7 @@ public class RangeDifference {
 
     /**
      * Returns the end index of the entity range on the right side.
-     * 
+     *
      * @return the end index of the entity range on the right side
      */
     public int rightEnd() {
@@ -203,7 +200,7 @@ public class RangeDifference {
 
     /**
      * Returns the start index of the entity range on the left side.
-     * 
+     *
      * @return the start index of the entity range on the left side
      */
     public int leftStart() {
@@ -212,7 +209,7 @@ public class RangeDifference {
 
     /**
      * Returns the number of entities on the left side.
-     * 
+     *
      * @return the number of entities on the left side
      */
     public int leftLength() {
@@ -221,7 +218,7 @@ public class RangeDifference {
 
     /**
      * Returns the end index of the entity range on the left side.
-     * 
+     *
      * @return the end index of the entity range on the left side
      */
     public int leftEnd() {
@@ -231,9 +228,9 @@ public class RangeDifference {
     /**
      * Returns the maximum number of entities in the left, right, and ancestor
      * sides of this range.
-     * 
+     *
      * @return the maximum number of entities in the left, right, and ancestor
-     *         sides of this range
+     * sides of this range
      */
     public int maxLength() {
         return Math.max(fRightLength, Math.max(fLeftLength, lAncestorLength));

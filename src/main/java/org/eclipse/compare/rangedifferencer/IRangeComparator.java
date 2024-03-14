@@ -30,7 +30,7 @@ public interface IRangeComparator {
 
     /**
      * Returns the number of comparable entities.
-     * 
+     *
      * @return the number of comparable entities
      */
     int getRangeCount();
@@ -38,15 +38,12 @@ public interface IRangeComparator {
     /**
      * Returns whether the comparable entity given by the first index matches an
      * entity specified by the other <code>IRangeComparator</code> and index.
-     * 
-     * @param thisIndex
-     *                the index of the comparable entity within this
-     *                <code>IRangeComparator</code>
-     * @param other
-     *                the IRangeComparator to compare this with
-     * @param otherIndex
-     *                the index of the comparable entity within the other
-     *                <code>IRangeComparator</code>
+     *
+     * @param thisIndex  the index of the comparable entity within this
+     *                   <code>IRangeComparator</code>
+     * @param other      the IRangeComparator to compare this with
+     * @param otherIndex the index of the comparable entity within the other
+     *                   <code>IRangeComparator</code>
      * @return <code>true</code> if the comparable entities are equal
      */
     boolean rangesEqual(int thisIndex, IRangeComparator other, int otherIndex);
@@ -54,17 +51,14 @@ public interface IRangeComparator {
     /**
      * Returns whether a comparison should be skipped because it would be too
      * costly (or lengthy).
-     * 
-     * @param length
-     *                a number on which to base the decision whether to return
-     *                <code>true</code> or <code>false</code>
-     * @param maxLength
-     *                another number on which to base the decision whether to
-     *                return <code>true</code> or <code>false</code>
-     * @param other
-     *                the other <code>IRangeComparator</code> to compare with
+     *
+     * @param length    a number on which to base the decision whether to return
+     *                  <code>true</code> or <code>false</code>
+     * @param maxLength another number on which to base the decision whether to
+     *                  return <code>true</code> or <code>false</code>
+     * @param other     the other <code>IRangeComparator</code> to compare with
      * @return <code>true</code> to avoid a too lengthy range comparison
      */
     boolean skipRangeComparison(int length, int maxLength,
-            IRangeComparator other);
+                                IRangeComparator other);
 }

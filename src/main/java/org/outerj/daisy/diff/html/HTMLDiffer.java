@@ -31,7 +31,7 @@ import org.xml.sax.SAXException;
  * between them, marks the changes, and outputs a merged tree to a
  * {@link HtmlSaxDiffOutput} instance.
  */
-public class HTMLDiffer implements Differ{
+public class HTMLDiffer implements Differ {
 
     private DiffOutput output;
 
@@ -40,79 +40,79 @@ public class HTMLDiffer implements Differ{
     }
 
     public void diff(TextNodeComparator ancestorComparator, TextNodeComparator leftComparator,
-    		TextNodeComparator rightComparator) throws SAXException {
-    	
+                     TextNodeComparator rightComparator) throws SAXException {
+
         LCSSettings settings = new LCSSettings();
         settings.setUseGreedyMethod(false);
         // settings.setPowLimit(1.5);
         // settings.setTooLong(100000*100000);
-    	org.eclipse.compare.rangedifferencer.RangeDifference[] differences = RangeDifferencer.findDifferences(settings, ancestorComparator, leftComparator, rightComparator);
-    	
-    	List<RangeDifference> pdifferences = preProcess(differences);
-    	
-    	int currentIndexAncestor = 0;
-    	int currentIndexLeft = 0;
-    	int currentIndexRight = 0;
-    	for (RangeDifference d : pdifferences) {
-    		
-    		int tempKind = d.kind();
-    		if (tempKind == RangeDifference.ANCESTOR) {
-    			// ignore, we won't show pseudo-conflicts currently (left and right have the same change)
-    			continue;
-    		}
+        org.eclipse.compare.rangedifferencer.RangeDifference[] differences = RangeDifferencer.findDifferences(settings, ancestorComparator, leftComparator, rightComparator);
 
-    			if (d.leftStart() > currentIndexLeft) {
-                    ancestorComparator.handlePossibleChangedPart(currentIndexLeft, d
-                            .leftStart(), currentIndexAncestor, d.ancestorStart(),
-                            leftComparator);
-                }
-    			if (d.rightStart() > currentIndexRight) {
-    				ancestorComparator.handlePossibleChangedPart(currentIndexRight, d
-    						.rightStart(), currentIndexAncestor, d.ancestorStart(),
-    						rightComparator);
-    			}
-			
-    		if (tempKind == RangeDifference.CONFLICT || tempKind == RangeDifference.LEFT) {
-    			// conflicts and changes on the left side
+        List<RangeDifference> pdifferences = preProcess(differences);
+
+        int currentIndexAncestor = 0;
+        int currentIndexLeft = 0;
+        int currentIndexRight = 0;
+        for (RangeDifference d : pdifferences) {
+
+            int tempKind = d.kind();
+            if (tempKind == RangeDifference.ANCESTOR) {
+                // ignore, we won't show pseudo-conflicts currently (left and right have the same change)
+                continue;
+            }
+
+            if (d.leftStart() > currentIndexLeft) {
+                ancestorComparator.handlePossibleChangedPart(currentIndexLeft, d
+                                .leftStart(), currentIndexAncestor, d.ancestorStart(),
+                        leftComparator);
+            }
+            if (d.rightStart() > currentIndexRight) {
+                ancestorComparator.handlePossibleChangedPart(currentIndexRight, d
+                                .rightStart(), currentIndexAncestor, d.ancestorStart(),
+                        rightComparator);
+            }
+
+            if (tempKind == RangeDifference.CONFLICT || tempKind == RangeDifference.LEFT) {
+                // conflicts and changes on the left side
                 if (d.leftLength() > 0) {
-                	ancestorComparator.markAsDeleted(d.leftStart(), d.leftEnd(),
-                			leftComparator, d.ancestorStart(), d.ancestorEnd(), ModificationType.ADDED);
+                    ancestorComparator.markAsDeleted(d.leftStart(), d.leftEnd(),
+                            leftComparator, d.ancestorStart(), d.ancestorEnd(), ModificationType.ADDED);
                 }
-    		}
+            }
 
-    		if (tempKind == RangeDifference.CONFLICT || tempKind == RangeDifference.RIGHT) {
-    			// conflicts and changes on the right side
+            if (tempKind == RangeDifference.CONFLICT || tempKind == RangeDifference.RIGHT) {
+                // conflicts and changes on the right side
                 if (d.rightLength() > 0) {
-	                ancestorComparator.markAsDeleted(d.rightStart(), d.rightEnd(),
-	                		rightComparator, d.ancestorStart(), d.ancestorEnd(), ModificationType.ADDED);
+                    ancestorComparator.markAsDeleted(d.rightStart(), d.rightEnd(),
+                            rightComparator, d.ancestorStart(), d.ancestorEnd(), ModificationType.ADDED);
                 }
-    		}
-                ancestorComparator.markAsNew(d.ancestorStart(), d.ancestorEnd(), ModificationType.REMOVED);
-    		
-    		currentIndexAncestor = d.ancestorEnd();
-    		currentIndexLeft = d.leftEnd();
-    		currentIndexRight = d.rightEnd();
-    	}
-    	if (currentIndexLeft < leftComparator.getRangeCount()) {
-    		ancestorComparator.handlePossibleChangedPart(currentIndexLeft,
-    				leftComparator.getRangeCount(), currentIndexAncestor,
-    				ancestorComparator.getRangeCount(), leftComparator);
-    	}
-    	if (currentIndexRight < rightComparator.getRangeCount()) {
-    		ancestorComparator.handlePossibleChangedPart(currentIndexRight,
-    				rightComparator.getRangeCount(), currentIndexAncestor,
-    				ancestorComparator.getRangeCount(), rightComparator);
-    	}
-    	
-    	ancestorComparator.expandWhiteSpace();
-    	output.generateOutput(ancestorComparator.getBodyNode());
+            }
+            ancestorComparator.markAsNew(d.ancestorStart(), d.ancestorEnd(), ModificationType.REMOVED);
+
+            currentIndexAncestor = d.ancestorEnd();
+            currentIndexLeft = d.leftEnd();
+            currentIndexRight = d.rightEnd();
+        }
+        if (currentIndexLeft < leftComparator.getRangeCount()) {
+            ancestorComparator.handlePossibleChangedPart(currentIndexLeft,
+                    leftComparator.getRangeCount(), currentIndexAncestor,
+                    ancestorComparator.getRangeCount(), leftComparator);
+        }
+        if (currentIndexRight < rightComparator.getRangeCount()) {
+            ancestorComparator.handlePossibleChangedPart(currentIndexRight,
+                    rightComparator.getRangeCount(), currentIndexAncestor,
+                    ancestorComparator.getRangeCount(), rightComparator);
+        }
+
+        ancestorComparator.expandWhiteSpace();
+        output.generateOutput(ancestorComparator.getBodyNode());
     }
-    
+
     /**
      * {@inheritDoc}
      */
     public void diff(TextNodeComparator leftComparator,
-            TextNodeComparator rightComparator) throws SAXException {
+                     TextNodeComparator rightComparator) throws SAXException {
         LCSSettings settings = new LCSSettings();
         settings.setUseGreedyMethod(false);
         // settings.setPowLimit(1.5);
@@ -128,7 +128,7 @@ public class HTMLDiffer implements Differ{
 
             if (d.leftStart() > currentIndexLeft) {
                 rightComparator.handlePossibleChangedPart(currentIndexLeft, d
-                        .leftStart(), currentIndexRight, d.rightStart(),
+                                .leftStart(), currentIndexRight, d.rightStart(),
                         leftComparator);
             }
             if (d.leftLength() > 0) {
@@ -156,8 +156,8 @@ public class HTMLDiffer implements Differ{
 
         for (int i = 0; i < differences.length; i++) {
 
-        	int ancestorStart = differences[i].ancestorStart();
-        	int ancestorEnd = differences[i].ancestorEnd();
+            int ancestorStart = differences[i].ancestorStart();
+            int ancestorEnd = differences[i].ancestorEnd();
             int leftStart = differences[i].leftStart();
             int leftEnd = differences[i].leftEnd();
             int rightStart = differences[i].rightStart();
@@ -171,8 +171,8 @@ public class HTMLDiffer implements Differ{
             while (i + 1 < differences.length
                     && differences[i + 1].kind() == kind
                     && score(leftLength, differences[i + 1].leftLength(),
-                            rightLength, differences[i + 1].rightLength()) > (differences[i + 1]
-                            .leftStart() - leftEnd)) {
+                    rightLength, differences[i + 1].rightLength()) > (differences[i + 1]
+                    .leftStart() - leftEnd)) {
                 leftEnd = differences[i + 1].leftEnd();
                 rightEnd = differences[i + 1].rightEnd();
                 ancestorEnd = differences[i + 1].ancestorEnd();

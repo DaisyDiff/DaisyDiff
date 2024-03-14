@@ -69,8 +69,8 @@ public class HtmlSaxDiffOutput implements DiffOutput {
                     handler.endElement("", "span", "span");
                     remStarted = false;
                 } else if (conflictStarted) {
-                	handler.endElement("", "span", "span");
-                	conflictStarted = false;
+                    handler.endElement("", "span", "span");
+                    conflictStarted = false;
                 }
                 generateOutput(((TagNode) child));
             } else if (child instanceof TextNode) {
@@ -79,26 +79,26 @@ public class HtmlSaxDiffOutput implements DiffOutput {
 
                 if (newStarted
                         && (mod.getOutputType() != ModificationType.ADDED || mod
-                                .isFirstOfID())) {
+                        .isFirstOfID())) {
                     handler.endElement("", "span", "span");
                     newStarted = false;
                 } else if (changeStarted
                         && (mod.getOutputType() != ModificationType.CHANGED
-                                || !mod.getChanges().equals(changeTXT) || mod
-                                .isFirstOfID())) {
+                        || !mod.getChanges().equals(changeTXT) || mod
+                        .isFirstOfID())) {
                     handler.endElement("", "span", "span");
                     changeStarted = false;
                 } else if (remStarted
                         && (mod.getOutputType() != ModificationType.REMOVED || mod
-                                .isFirstOfID())) {
+                        .isFirstOfID())) {
                     handler.endElement("", "span", "span");
                     remStarted = false;
                 } else if (conflictStarted
                         && (mod.getOutputType() != ModificationType.CONFLICT || mod
-                                .isFirstOfID())) {
+                        .isFirstOfID())) {
                     handler.endElement("", "span", "span");
                     conflictStarted = false;
-                }                		
+                }
 
                 // no else because a removed part can just be closed and a new
                 // part can start
@@ -133,19 +133,19 @@ public class HtmlSaxDiffOutput implements DiffOutput {
                     changeStarted = true;
                     changeTXT = mod.getChanges();
                 } else if (!remStarted
-                		&& mod.getOutputType() == ModificationType.REMOVED) {
-                	AttributesImpl attrs = new AttributesImpl();
-                	attrs.addAttribute("", "class", "class", "CDATA",
-                	"diff-html-removed");
-                	if (mod.isFirstOfID()) {
-                		attrs.addAttribute("", "id", "id", "CDATA", mod
-                				.getOutputType()
-                				+ "-" + prefix + "-" + mod.getID());
-                	}
-                	addAttributes(mod, attrs);
-                	
-                	handler.startElement("", "span", "span", attrs);
-                	remStarted = true;
+                        && mod.getOutputType() == ModificationType.REMOVED) {
+                    AttributesImpl attrs = new AttributesImpl();
+                    attrs.addAttribute("", "class", "class", "CDATA",
+                            "diff-html-removed");
+                    if (mod.isFirstOfID()) {
+                        attrs.addAttribute("", "id", "id", "CDATA", mod
+                                .getOutputType()
+                                + "-" + prefix + "-" + mod.getID());
+                    }
+                    addAttributes(mod, attrs);
+
+                    handler.startElement("", "span", "span", attrs);
+                    remStarted = true;
                 } else if (!conflictStarted
                         && mod.getOutputType() == ModificationType.CONFLICT) {
                     AttributesImpl attrs = new AttributesImpl();
@@ -165,7 +165,7 @@ public class HtmlSaxDiffOutput implements DiffOutput {
                 char[] chars = textChild.getText().toCharArray();
 
                 if (textChild instanceof ImageNode) {
-                    writeImage((ImageNode)textChild);
+                    writeImage((ImageNode) textChild);
                 } else {
                     handler.characters(chars, 0, chars.length);
                 }
@@ -183,8 +183,8 @@ public class HtmlSaxDiffOutput implements DiffOutput {
             handler.endElement("", "span", "span");
             remStarted = false;
         } else if (conflictStarted) {
-        	handler.endElement("", "span", "span");
-        	conflictStarted = false;
+            handler.endElement("", "span", "span");
+            conflictStarted = false;
         }
 
         if (!node.getQName().equalsIgnoreCase("img")
@@ -202,8 +202,8 @@ public class HtmlSaxDiffOutput implements DiffOutput {
             attrs.addAttribute("", "changeType", "changeType", "CDATA",
                     "diff-added-image");
         } else if (imgNode.getModification().getOutputType() == ModificationType.CONFLICT) {
-        	attrs.addAttribute("", "changeType", "changeType", "CDATA",
-        	"diff-conflict-image");
+            attrs.addAttribute("", "changeType", "changeType", "CDATA",
+                    "diff-conflict-image");
         }
         handler.startElement("", "img", "img", attrs);
         handler.endElement("", "img", "img");

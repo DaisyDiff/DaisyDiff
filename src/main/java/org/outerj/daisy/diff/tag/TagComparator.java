@@ -19,6 +19,7 @@ package org.outerj.daisy.diff.tag;
  * Takes a String and generates tokens/atoms that can be used by LCS. This
  * comparator is used specifically for HTML documents.
  */
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -68,7 +69,7 @@ public class TagComparator implements IAtomSplitter {
 
             if (c == '<'
                     && TagAtom
-                            .isValidTag(s.substring(i, s.indexOf('>', i) + 1))) {
+                    .isValidTag(s.substring(i, s.indexOf('>', i) + 1))) {
                 // a tag
                 if (currentWord.length() > 0) {
                     atoms.add(new TextAtom(currentWord.toString()));
@@ -125,7 +126,7 @@ public class TagComparator implements IAtomSplitter {
     }
 
     public boolean rangesEqual(int thisIndex, IRangeComparator other,
-            int otherIndex) {
+                               int otherIndex) {
         TagComparator tc2;
         try {
             tc2 = (TagComparator) other;
@@ -136,7 +137,7 @@ public class TagComparator implements IAtomSplitter {
     }
 
     public boolean skipRangeComparison(int length, int maxLength,
-            IRangeComparator other) {
+                                       IRangeComparator other) {
         return false;
     }
 

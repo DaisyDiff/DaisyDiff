@@ -38,7 +38,7 @@ public class DaisyDiff {
      * Diffs two html files, outputting the result to the specified consumer.
      */
     public static void diffHTML(InputSource oldSource, InputSource newSource,
-            ContentHandler consumer, String prefix, Locale locale)
+                                ContentHandler consumer, String prefix, Locale locale)
             throws SAXException, IOException {
 
         DomTreeBuilder oldHandler = new DomTreeBuilder();
@@ -66,7 +66,7 @@ public class DaisyDiff {
      * the specified consumer.
      */
     public static void diffTag(String oldText, String newText,
-            ContentHandler consumer) throws Exception {
+                               ContentHandler consumer) throws Exception {
         consumer.startDocument();
         TagComparator oldComp = new TagComparator(oldText);
         TagComparator newComp = new TagComparator(newText);
@@ -82,7 +82,7 @@ public class DaisyDiff {
      * the specified consumer.
      */
     public static void diffTag(BufferedReader oldText, BufferedReader newText,
-            ContentHandler consumer) throws Exception {
+                               ContentHandler consumer) throws Exception {
 
         TagComparator oldComp = new TagComparator(oldText);
         TagComparator newComp = new TagComparator(newText);

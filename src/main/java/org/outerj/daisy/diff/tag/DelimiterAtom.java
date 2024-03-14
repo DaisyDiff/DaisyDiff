@@ -32,38 +32,38 @@ public class DelimiterAtom extends TextAtom {
 
     public static boolean isValidDelimiter(char c) {
         switch (c) {
-        // Basic Delimiters
-        case '/':
-        case '.':
-        case '!':
-        case ',':
-        case ';':
-        case '?':
-        case ' ':
-        case '=':
-        case '\'':
-        case '"':
-        case '\t':
-        case '\r':
-        case '\n':
-            // Extra Delimiters
-        case '[':
-        case ']':
-        case '{':
-        case '}':
-        case '(':
-        case ')':
-        case '&':
-        case '|':
-        case '\\':
-        case '-':
-        case '_':
-        case '+':
-        case '*':
-        case ':':
-            return true;
-        default:
-            return false;
+            // Basic Delimiters
+            case '/':
+            case '.':
+            case '!':
+            case ',':
+            case ';':
+            case '?':
+            case ' ':
+            case '=':
+            case '\'':
+            case '"':
+            case '\t':
+            case '\r':
+            case '\n':
+                // Extra Delimiters
+            case '[':
+            case ']':
+            case '{':
+            case '}':
+            case '(':
+            case ')':
+            case '&':
+            case '|':
+            case '\\':
+            case '-':
+            case '_':
+            case '+':
+            case '*':
+            case ':':
+                return true;
+            default:
+                return false;
         }
     }
 
@@ -80,16 +80,16 @@ public class DelimiterAtom extends TextAtom {
     public String toString() {
         return "DelimiterAtom: "
                 + getFullText().replaceAll("\n", "\\\\n").replaceAll("\r",
-                        "\\\\r").replaceAll("\t", "\\\\t");
+                "\\\\r").replaceAll("\t", "\\\\t");
     }
 
     @Override
     public boolean equalsIdentifier(Atom a) {
         return super.equalsIdentifier(a)
-        // Handling for automatically inserted newlines
+                // Handling for automatically inserted newlines
                 || ((a.getIdentifier().equals(" ") || a.getIdentifier().equals(
-                        "\n")) && (getIdentifier().equals(" ") || getIdentifier()
-                        .equals("\n")));
+                "\n")) && (getIdentifier().equals(" ") || getIdentifier()
+                .equals("\n")));
     }
 
 }

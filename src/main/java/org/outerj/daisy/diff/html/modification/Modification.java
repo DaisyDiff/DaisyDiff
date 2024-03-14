@@ -56,17 +56,18 @@ public class Modification implements Cloneable {
 
     /**
      * Returns the type of this modification regarding output formatting (i.e.
-     * in order to specify how this modification shall be formatted). 
-     * 
+     * in order to specify how this modification shall be formatted).
+     * <p>
      * In three-way diffs we format "ADDED" modifications as REMOVED, and the
-     * other way round, because the comparison is reversed, compared to a 
+     * other way round, because the comparison is reversed, compared to a
      * two-way diff.
+     *
      * @return the way how this modification shall be formatted
      */
     public ModificationType getOutputType() {
-    	return outputType;
+        return outputType;
     }
-    
+
     public void setID(long id) {
         this.id = id;
     }
@@ -109,22 +110,19 @@ public class Modification implements Cloneable {
         this.firstOfID = firstOfID;
     }
 
-	/**
-	 * @return the htmlLayoutChanges
-	 */
-	public List<HtmlLayoutChange> getHtmlLayoutChanges() {
-		return htmlLayoutChanges;
-	}
+    /**
+     * @return the htmlLayoutChanges
+     */
+    public List<HtmlLayoutChange> getHtmlLayoutChanges() {
+        return htmlLayoutChanges;
+    }
 
-	/**
-	 * @param htmlLayoutChanges the htmlLayoutChanges to set
-	 */
-	public void setHtmlLayoutChanges(List<HtmlLayoutChange> htmlLayoutChanges) {
-		this.htmlLayoutChanges = htmlLayoutChanges;
-	}
+    /**
+     * @param htmlLayoutChanges the htmlLayoutChanges to set
+     */
+    public void setHtmlLayoutChanges(List<HtmlLayoutChange> htmlLayoutChanges) {
+        this.htmlLayoutChanges = htmlLayoutChanges;
+    }
 
-	
-    
-    
 
 }

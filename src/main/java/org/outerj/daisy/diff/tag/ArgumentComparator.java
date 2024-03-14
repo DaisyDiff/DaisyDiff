@@ -77,7 +77,7 @@ public class ArgumentComparator implements IAtomSplitter {
     }
 
     public boolean rangesEqual(int thisIndex, IRangeComparator other,
-            int otherIndex) {
+                               int otherIndex) {
         ArgumentComparator tc2;
         try {
             tc2 = (ArgumentComparator) other;
@@ -88,7 +88,7 @@ public class ArgumentComparator implements IAtomSplitter {
     }
 
     public boolean skipRangeComparison(int length, int maxLength,
-            IRangeComparator other) {
+                                       IRangeComparator other) {
         return false;
     }
 

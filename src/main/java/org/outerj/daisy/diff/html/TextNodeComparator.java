@@ -72,6 +72,7 @@ public class TextNodeComparator implements IRangeComparator, Iterable<TextNode> 
     /**
      * Marks the given range as new. In the output, the range will be formatted as
      * specified by the anOutputFormat parameter.
+     *
      * @param start
      * @param end
      * @param outputFormat specifies how this range shall be formatted in the output
@@ -107,11 +108,12 @@ public class TextNodeComparator implements IRangeComparator, Iterable<TextNode> 
     /**
      * Marks the given range as new. In the output, the range will be formatted
      * as "added".
+     *
      * @param start
      * @param end
      */
     public void markAsNew(int start, int end) {
-    	markAsNew(start, end, ModificationType.ADDED);
+        markAsNew(start, end, ModificationType.ADDED);
     }
 
     public boolean rangesEqual(int i1, IRangeComparator rangeComp, int i2) {
@@ -134,7 +136,7 @@ public class TextNodeComparator implements IRangeComparator, Iterable<TextNode> 
     private boolean changedIDUsed = false;
 
     public void handlePossibleChangedPart(int leftstart, int leftend,
-            int rightstart, int rightend, TextNodeComparator leftComparator) {
+                                          int rightstart, int rightend, TextNodeComparator leftComparator) {
         int i = rightstart;
         int j = leftstart;
 
@@ -212,7 +214,8 @@ public class TextNodeComparator implements IRangeComparator, Iterable<TextNode> 
 
     /**
      * Marks the given range as deleted. In the output, the range will be
-     * formatted as specified by the parameter anOutputFormat. 
+     * formatted as specified by the parameter anOutputFormat.
+     *
      * @param start
      * @param end
      * @param oldComp
@@ -220,7 +223,7 @@ public class TextNodeComparator implements IRangeComparator, Iterable<TextNode> 
      * @param anOutputFormat specifies how this range shall be formatted in the output
      */
     public void markAsDeleted(int start, int end, TextNodeComparator oldComp,
-            int before, int after, ModificationType outputFormat) {
+                              int before, int after, ModificationType outputFormat) {
 
         if (end <= start)
             return;
@@ -265,26 +268,26 @@ public class TextNodeComparator implements IRangeComparator, Iterable<TextNode> 
         // Set nextLeaf to the leaf before which the old HTML needs to be
         // inserted
         Node nextLeaf = null;
-boolean useAfter = false;
-        
+        boolean useAfter = false;
+
         if (after < getRangeCount()) {
-            
+
             LastCommonParentResult orderResult = getTextNode(before).getLastCommonParent(getTextNode(after));
             List<TagNode> check = getTextNode(before).getParentTree();
             Collections.reverse(check);
-            for(TagNode curr : check) {
-                if(curr == orderResult.getLastCommonParent()) {
+            for (TagNode curr : check) {
+                if (curr == orderResult.getLastCommonParent()) {
                     break;
                 } else if (curr.isBlockLevel()) {
                     useAfter = true;
                     break;
                 }
             }
-            if(!useAfter) {
+            if (!useAfter) {
                 check = getTextNode(after).getParentTree();
                 Collections.reverse(check);
-                for(TagNode curr : check) {
-                    if(curr == orderResult.getLastCommonParent()) {
+                for (TagNode curr : check) {
+                    if (curr == orderResult.getLastCommonParent()) {
                         break;
                     } else if (curr.isBlockLevel()) {
                         useAfter = true;
@@ -295,7 +298,7 @@ boolean useAfter = false;
         } else {
             useAfter = false;
         }
-        if(useAfter)
+        if (useAfter)
             nextLeaf = getTextNode(after);
         else if (before < getRangeCount())
             nextLeaf = getTextNode(before);
@@ -335,20 +338,20 @@ boolean useAfter = false;
                     // The difference is in the parent, so compare them
                     // now THIS is tricky
                     double distancePrev = deletedNodes
-                    .get(0)
-                    .getParent()
-                    .getMatchRatio(prevResult.getLastCommonParent());
+                            .get(0)
+                            .getParent()
+                            .getMatchRatio(prevResult.getLastCommonParent());
                     double distanceNext = deletedNodes
-                    .get(deletedNodes.size() - 1)
-                    .getParent()
-                    .getMatchRatio(nextResult.getLastCommonParent());
+                            .get(deletedNodes.size() - 1)
+                            .getParent()
+                            .getMatchRatio(nextResult.getLastCommonParent());
 
                     if (distancePrev <= distanceNext) {
-                    	// insert after the previous node
+                        // insert after the previous node
                         prevResult.setLastCommonParentDepth(prevResult
                                 .getLastCommonParentDepth() + 1);
                     } else {
-                    	// insert before the next node
+                        // insert before the next node
                         nextResult.setLastCommonParentDepth(nextResult
                                 .getLastCommonParentDepth() + 1);
                     }
@@ -376,8 +379,8 @@ boolean useAfter = false;
                 // Inserting at the back
                 if (nextResult.isSplittingNeeded()) {
                     boolean splitOccured = nextLeaf.getParent()
-                    .splitUntill(nextResult.getLastCommonParent(),
-                            nextLeaf, false);
+                            .splitUntill(nextResult.getLastCommonParent(),
+                                    nextLeaf, false);
 
                     if (splitOccured) {
                         // The place where to insert is shifted one place to the
@@ -387,7 +390,7 @@ boolean useAfter = false;
                     }
                 }
                 nextLeaf = deletedNodes.remove(deletedNodes.size() - 1)
-                .copyTree();
+                        .copyTree();
                 nextLeaf.setParent(nextResult.getLastCommonParent());
                 nextResult.getLastCommonParent().addChild(
                         nextResult.getIndexInLastCommonParent(), nextLeaf);
@@ -398,18 +401,19 @@ boolean useAfter = false;
         lastModified = nextLastModified;
         deletedID++;
     }
-    
-	/**
+
+    /**
      * Marks the given range as deleted. In the output, the range will be
      * formatted as "removed".
+     *
      * @param start
      * @param end
      * @param oldComp
      * @param before
      */
     public void markAsDeleted(int start, int end, TextNodeComparator oldComp,
-            int before, int after) {
-    	markAsDeleted(start, end, oldComp, before, after, ModificationType.REMOVED);
+                              int before, int after) {
+        markAsDeleted(start, end, oldComp, before, after, ModificationType.REMOVED);
     }
 
     public void expandWhiteSpace() {
@@ -419,54 +423,57 @@ boolean useAfter = false;
     public Iterator<TextNode> iterator() {
         return textNodes.iterator();
     }
-    
+
     /**
      * Used for combining multiple comparators in order to create a single
      * output document. The IDs must be successive along the different
      * comparators.
+     *
      * @param aDeletedID
      */
     public void setStartDeletedID(long aDeletedID) {
-		deletedID = aDeletedID;
-	}
-    
+        deletedID = aDeletedID;
+    }
+
     /**
      * Used for combining multiple comparators in order to create a single
      * output document. The IDs must be successive along the different
      * comparators.
+     *
      * @param aDeletedID
      */
     public void setStartChangedID(long aChangedID) {
-		changedID = aChangedID;
-	}
-    
+        changedID = aChangedID;
+    }
+
     /**
      * Used for combining multiple comparators in order to create a single
      * output document. The IDs must be successive along the different
      * comparators.
+     *
      * @param aDeletedID
      */
     public void setStartNewID(long aNewID) {
-		newID = aNewID;
-	}
-    
+        newID = aNewID;
+    }
+
     public long getChangedID() {
-		return changedID;
-	}
-    
+        return changedID;
+    }
+
     public long getDeletedID() {
-		return deletedID;
-	}
-    
+        return deletedID;
+    }
+
     public long getNewID() {
-		return newID;
-	}
-    
+        return newID;
+    }
+
     public List<Modification> getLastModified() {
-		return lastModified;
-	}
-    
+        return lastModified;
+    }
+
     public void setLastModified(List<Modification> aLastModified) {
-		lastModified = new ArrayList<Modification>(aLastModified);
-	}   
+        lastModified = new ArrayList<Modification>(aLastModified);
+    }
 }

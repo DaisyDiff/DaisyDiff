@@ -25,7 +25,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
 public class Main {
-  static boolean quietMode = false;
+    static boolean quietMode = false;
 
     public static void main(String[] args) throws URISyntaxException {
 
@@ -55,42 +55,41 @@ public class Main {
                     if (split[1].equalsIgnoreCase("xml")) {
                         htmlOut = false;
                     }
-                } else if (split[0].equals("--q")){
-                  quietMode = true;
-                } else{
+                } else if (split[0].equals("--q")) {
+                    quietMode = true;
+                } else {
                     help();
                 }
 
             }
-            File outputFile= new File(outputFileName);
+            File outputFile = new File(outputFileName);
             try {
                 outputFile.createNewFile(); // Fail if outputFileName is malformed. Otherwise result.setResult() below would silently supress an exception (at least with jdk1.8.0_65). Then calling postProcess.endDocument() below would fail with confusing "javax.xml.transform.TransformerException: org.xml.sax.SAXException: setResult() must be called prior to startDocument()."
-            }
-            catch( IOException e ) {
-                System.err.println( "Filepath " +outputFileName+ " is malformed, or some of its folders don't exist, or you don't have write access." );
+            } catch (IOException e) {
+                System.err.println("Filepath " + outputFileName + " is malformed, or some of its folders don't exist, or you don't have write access.");
                 return;
             }
-            if (!quietMode){
-              System.out.println("Daisy Diff https://github.com/DaisyDiff/DaisyDiff");
-              System.out.println("Comparing documents: " +args[0]+ " and " +args[1] );
-              System.out.println( "Diff type: " +(
-                htmlDiff
-                ? "html"
-                : "tag"
-              ) );
-              System.out.println("Writing "+(htmlOut?"html":"xml")+" output to " + outputFileName);
+            if (!quietMode) {
+                System.out.println("Daisy Diff https://github.com/DaisyDiff/DaisyDiff");
+                System.out.println("Comparing documents: " + args[0] + " and " + args[1]);
+                System.out.println("Diff type: " + (
+                        htmlDiff
+                                ? "html"
+                                : "tag"
+                ));
+                System.out.println("Writing " + (htmlOut ? "html" : "xml") + " output to " + outputFileName);
             }
 
-            if(css.length>0){
+            if (css.length > 0) {
                 if (!quietMode)
-                  System.out.println("Adding external css files:");
-                for(String cssLink:css){
-                    System.out.println("  "+cssLink);
+                    System.out.println("Adding external css files:");
+                for (String cssLink : css) {
+                    System.out.println("  " + cssLink);
                 }
             }
-            if (!quietMode){
-              System.out.println("");
-              System.out.print(".");
+            if (!quietMode) {
+                System.out.println("");
+                System.out.print(".");
             }
             SAXTransformerFactory tf = (SAXTransformerFactory) TransformerFactory
                     .newInstance();
@@ -102,14 +101,12 @@ public class Main {
 
             if (args[0].startsWith("http://")) {
                 oldStream = new URI(args[0]).toURL().openStream();
-            }
-            else {
+            } else {
                 oldStream = new FileInputStream(args[0]);
             }
             if (args[1].startsWith("http://")) {
                 newStream = new URI(args[1]).toURL().openStream();
-            }
-            else {
+            } else {
                 newStream = new FileInputStream(args[1]);
             }
 
@@ -117,8 +114,8 @@ public class Main {
 
             if (htmlDiff) {
 
-                ContentHandler postProcess = htmlOut? filter.xsl(result,
-                        "xslfilter/htmlheader.xsl"):result;
+                ContentHandler postProcess = htmlOut ? filter.xsl(result,
+                        "xslfilter/htmlheader.xsl") : result;
 
                 Locale locale = Locale.getDefault();
                 String prefix = "diff";
@@ -158,8 +155,8 @@ public class Main {
 
             } else {
 
-                ContentHandler postProcess = htmlOut? filter.xsl(result,
-                        "xslfilter/tagheader.xsl"):result;
+                ContentHandler postProcess = htmlOut ? filter.xsl(result,
+                        "xslfilter/tagheader.xsl") : result;
                 postProcess.startDocument();
                 postProcess.startElement("", "diffreport", "diffreport",
                         new AttributesImpl());
@@ -198,41 +195,41 @@ public class Main {
             }
 
         } catch (Throwable e) {
-          if (quietMode){
-            System.out.println(e);
-          } else {
-            e.printStackTrace();
-            if (e.getCause() != null) {
-                e.getCause().printStackTrace();
+            if (quietMode) {
+                System.out.println(e);
+            } else {
+                e.printStackTrace();
+                if (e.getCause() != null) {
+                    e.getCause().printStackTrace();
+                }
+                if (e instanceof SAXException) {
+                    ((SAXException) e).getException().printStackTrace();
+                }
+                help();
             }
-            if (e instanceof SAXException) {
-                ((SAXException) e).getException().printStackTrace();
-            }
-            help();
-          }
         } finally {
             try {
-                if(oldStream != null) oldStream.close();
+                if (oldStream != null) oldStream.close();
             } catch (IOException e) {
                 //ignore this exception
             }
             try {
-                if(newStream != null) newStream.close();
+                if (newStream != null) newStream.close();
             } catch (IOException e) {
                 //ignore this exception
             }
         }
         if (quietMode)
-          System.out.println();
+            System.out.println();
         else
-          System.out.println("done");
+            System.out.println("done");
 
     }
 
     private static void doCSS(String[] css, ContentHandler handler) throws SAXException {
         handler.startElement("", "css", "css",
                 new AttributesImpl());
-        for(String cssLink : css){
+        for (String cssLink : css) {
             AttributesImpl attr = new AttributesImpl();
             attr.addAttribute("", "href", "href", "CDATA", cssLink);
             attr.addAttribute("", "type", "type", "CDATA", "text/css");

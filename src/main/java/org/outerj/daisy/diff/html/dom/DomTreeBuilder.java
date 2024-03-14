@@ -17,6 +17,7 @@ package org.outerj.daisy.diff.html.dom;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -41,7 +42,9 @@ public class DomTreeBuilder extends DefaultHandler implements DomTree {
 
     private boolean whiteSpaceBeforeThis = false;
 
-    /** When greater than 0, this indicates that the node being parsed is a descendant of a pre tag. */
+    /**
+     * When greater than 0, this indicates that the node being parsed is a descendant of a pre tag.
+     */
     private int numberOfActivePreTags = 0; // calculating this as required for every node is expensive.
 
     private Node lastSibling = null;
@@ -73,7 +76,7 @@ public class DomTreeBuilder extends DefaultHandler implements DomTree {
 
     @Override
     public void startElement(String uri, String localName, String qName,
-            Attributes attributes) throws SAXException {
+                             Attributes attributes) throws SAXException {
 
         if (!documentStarted || documentEnded)
             throw new IllegalStateException();
@@ -93,7 +96,7 @@ public class DomTreeBuilder extends DefaultHandler implements DomTree {
                 numberOfActivePreTags++;
             }
             if (isSeparatingTag(newTagNode)) {
-               addSeparatorNode();
+                addSeparatorNode();
             }
 
         } else if (bodyStarted) {
@@ -131,7 +134,7 @@ public class DomTreeBuilder extends DefaultHandler implements DomTree {
                 numberOfActivePreTags--;
             }
             if (isSeparatingTag(currentParent)) {
-               addSeparatorNode();
+                addSeparatorNode();
             }
             currentParent = currentParent.getParent();
             whiteSpaceBeforeThis = false;
@@ -183,62 +186,63 @@ public class DomTreeBuilder extends DefaultHandler implements DomTree {
     /**
      * Returns <code>true</code> if the given tag separates text nodes
      * from being successive. I.e. every block starts a new distinct text flow.
+     *
      * @param aTagNode
      * @return
      */
     private boolean isSeparatingTag(TagNode aTagNode) {
-    	// treat all block tags as separating
-    	return aTagNode.isBlockLevel();
-	}
+        // treat all block tags as separating
+        return aTagNode.isBlockLevel();
+    }
 
     /**
      * Ensures that a separator is added after the last text node.
      */
     private void addSeparatorNode() {
-    	if (textNodes.isEmpty()) {
-    		return;
-    	}
-    	
-    	// don't add multiple separators
-    	if (textNodes.get(textNodes.size() - 1) instanceof SeparatingNode) {
-    		return;
-    	}
-    	
-    	textNodes.add(new SeparatingNode(currentParent));
+        if (textNodes.isEmpty()) {
+            return;
+        }
+
+        // don't add multiple separators
+        if (textNodes.get(textNodes.size() - 1) instanceof SeparatingNode) {
+            return;
+        }
+
+        textNodes.add(new SeparatingNode(currentParent));
     }
-    
+
     public static boolean isDelimiter(char c) {
         if (WhiteSpaceNode.isWhiteSpace(c))
             return true;
         switch (c) {
-        // Basic Delimiters
-        case '/':
-        case '.':
-        case '!':
-        case ',':
-        case ';':
-        case '?':
-        case '=':
-        case '\'':
-        case '"':
-            // Extra Delimiters
-        case '[':
-        case ']':
-        case '{':
-        case '}':
-        case '(':
-        case ')':
-        case '&':
-        case '|':
-        case '\\':
-        case '-':
-        case '_':
-        case '+':
-        case '*':
-        case ':':
-            return true;
-        default:
-            return false;
+            // Basic Delimiters
+            case '/':
+            case '.':
+            case '!':
+            case ',':
+            case ';':
+            case '?':
+            case '=':
+            case '\'':
+            case '"':
+                // Extra Delimiters
+            case '[':
+            case ']':
+            case '{':
+            case '}':
+            case '(':
+            case ')':
+            case '&':
+            case '|':
+            case '\\':
+            case '-':
+            case '_':
+            case '+':
+            case '*':
+            case ':':
+                return true;
+            default:
+                return false;
         }
     }
 
