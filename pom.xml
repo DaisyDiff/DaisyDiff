@@ -57,6 +57,16 @@
 
     <profiles>
         <profile>
+            <id>githubDeploy</id>
+            <distributionManagement>
+                <repository>
+                    <id>github</id>
+                    <name>Github package</name>
+                    <url>https://maven.pkg.github.com/SchweizerischeBundesbahnen/html5diff</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+        <profile>
             <id>repsyDeploy</id>
             <distributionManagement>
                 <repository>
