@@ -119,12 +119,12 @@ public class NekoHtmlParser {
         }
 
         public void endElement(String namespaceURI, String localName,
-                String qName) throws SAXException {
+                               String qName) throws SAXException {
             consumer.endElement("", localName, localName);
         }
 
         public void startElement(String namespaceURI, String localName,
-                String qName, Attributes atts) throws SAXException {
+                                 String qName, Attributes atts) throws SAXException {
             AttributesImpl newAtts = new AttributesImpl(atts);
             for (int i = 0; i < atts.getLength(); i++) {
                 newAtts.setURI(i, "");

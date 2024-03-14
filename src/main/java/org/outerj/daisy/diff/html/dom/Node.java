@@ -33,6 +33,7 @@ public abstract class Node {
      * This constructor not only sets the parameter as the parent for the
      * created node, but also appends the created node to the collection
      * of the parent's children.
+     *
      * @param parent - the parent for the new node.
      */
     public Node(TagNode parent) {
@@ -58,6 +59,7 @@ public abstract class Node {
      * that is ordered starting from the root by the depth.
      * Index of an element in that list corresponds its depth
      * (if depth of the root is 0)
+     *
      * @return ordered by depth list of the ancestors or an empty
      * <code>List&lt;TagNode></code> if the parent is null.
      */
@@ -71,22 +73,23 @@ public abstract class Node {
     }
 
     //change for correct insertion of the deleted nodes
-    
+
     /**
-     * "equals" method should work differently for 
+     * "equals" method should work differently for
      * the case where the compared nodes are from the same tree,
      * and in that case return true only if it's the same object
-     * This method returns the root of the tree (which should be 
-     * common ancestor for every node in the tree). If the roots 
+     * This method returns the root of the tree (which should be
+     * common ancestor for every node in the tree). If the roots
      * are the same object, then the nodes are in the same tree.
+     *
      * @return the "top" ancestor if this node has a parent,<br>
      * or<br>
-     * the node itself if there is no parent, 
+     * the node itself if there is no parent,
      * and this is a <code>TagNode</code><br>
      * or<br>
      * null if there is no parents and this node isn't a <code>TagNode</code>
      */
-    public TagNode getRoot(){
+    public TagNode getRoot() {
         return root;
     }
 
@@ -99,10 +102,11 @@ public abstract class Node {
     /**
      * Descent the ancestors list for both nodes stopping either
      * at the first no-match case or when either of the lists is exhausted.
+     *
      * @param other - the node to check for common parent
-     * @return result that contains last common parent, depth, 
-     * index in the list of children of the common parent of 
-     * an ancestor(or self) of this node that is 
+     * @return result that contains last common parent, depth,
+     * index in the list of children of the common parent of
+     * an ancestor(or self) of this node that is
      * immediate child of the common parent.
      * @throws java.lang.IllegalArgumentException if the parameter is null
      */
@@ -127,29 +131,29 @@ public abstract class Node {
                 i++;
             }
         }
- 
+
         result.setLastCommonParentDepth(i - 1);
         result.setLastCommonParent(myParents.get(i - 1));
 
         if (!isSame) {//found different parent
             result.setIndexInLastCommonParent(
-            		myParents.get(i - 1).getIndexOf(myParents.get(i)));
+                    myParents.get(i - 1).getIndexOf(myParents.get(i)));
             result.setSplittingNeeded();
         } else if (myParents.size() < otherParents.size()) {
-        	//current node is not so deeply nested
+            //current node is not so deeply nested
             result.setIndexInLastCommonParent(
-            		myParents.get(i - 1).getIndexOf(this));
+                    myParents.get(i - 1).getIndexOf(this));
         } else if (myParents.size() > otherParents.size()) {
             // All tags matched but there are tags left in this tree - 
-        	//other node is not so deeply nested
+            //other node is not so deeply nested
             result.setIndexInLastCommonParent(
-            		myParents.get(i - 1).getIndexOf(myParents.get(i)));
+                    myParents.get(i - 1).getIndexOf(myParents.get(i)));
             result.setSplittingNeeded();
         } else {
             // All tags matched until the very last one in both trees
             // or there were no tags besides the BODY
             result.setIndexInLastCommonParent(
-            		myParents.get(i - 1).getIndexOf(this));
+                    myParents.get(i - 1).getIndexOf(this));
         }
         return result;
     }
@@ -157,6 +161,7 @@ public abstract class Node {
     /**
      * changes the parent field of this node. Does NOT append/remove
      * itself from the previous or the new parent children collection.
+     *
      * @param parent - new parent to assign
      */
     public void setParent(TagNode parent) {
@@ -165,8 +170,7 @@ public abstract class Node {
             setRoot(parent.getRoot());
     }
 
-    protected void setRoot(TagNode root)
-    {
+    protected void setRoot(TagNode root) {
         this.root = root;
     }
 

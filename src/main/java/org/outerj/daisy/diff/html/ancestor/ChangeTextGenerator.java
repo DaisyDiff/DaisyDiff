@@ -27,8 +27,8 @@ import org.outerj.daisy.diff.html.modification.HtmlLayoutChange;
 
 public class ChangeTextGenerator {
 
-	private List<HtmlLayoutChange> htmlLayoutChanges = null;
-	
+    private List<HtmlLayoutChange> htmlLayoutChanges = null;
+
     private AncestorComparator ancestorComparator;
 
     private AncestorComparator other;
@@ -36,16 +36,16 @@ public class ChangeTextGenerator {
     private TagToStringFactory factory;
 
     private Locale locale;
-    
+
     private static final int MAX_OUTPUT_LINE_LENGTH = 55;   //   Lines won't go longer than this unless a single word it longer than this.
 
     public ChangeTextGenerator(AncestorComparator ancestorComparator,
-            AncestorComparator other, Locale locale) {
+                               AncestorComparator other, Locale locale) {
         this.ancestorComparator = ancestorComparator;
         this.other = other;
         this.factory = new TagToStringFactory();
         this.locale = locale;
-        
+
         htmlLayoutChanges = new ArrayList<HtmlLayoutChange>();
     }
 
@@ -118,28 +118,27 @@ public class ChangeTextGenerator {
     }
 
     private void addTagOld(ChangeText txt, TagNode ancestor) {
-    	TagToString tagToString = factory.create(ancestor, locale);
-    	tagToString.getRemovedDescription(txt);
-    	htmlLayoutChanges.add(tagToString.getHtmlLayoutChange());
+        TagToString tagToString = factory.create(ancestor, locale);
+        tagToString.getRemovedDescription(txt);
+        htmlLayoutChanges.add(tagToString.getHtmlLayoutChange());
     }
 
     private void addTagNew(ChangeText txt, TagNode ancestor) {
-    	TagToString tagToString = factory.create(ancestor, locale);
-    	tagToString.getAddedDescription(txt);
-    	htmlLayoutChanges.add(tagToString.getHtmlLayoutChange());
+        TagToString tagToString = factory.create(ancestor, locale);
+        tagToString.getAddedDescription(txt);
+        htmlLayoutChanges.add(tagToString.getHtmlLayoutChange());
     }
 
     private TagNode getAncestor(int i) {
         return ancestorComparator.getAncestor(i);
     }
 
-	/**
-	 * @return the htmlChange
-	 */
-	public List<HtmlLayoutChange> getHtmlLayoutChanges() {
-		return htmlLayoutChanges;
-	}
-    
-    
+    /**
+     * @return the htmlChange
+     */
+    public List<HtmlLayoutChange> getHtmlLayoutChanges() {
+        return htmlLayoutChanges;
+    }
+
 
 }

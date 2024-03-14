@@ -26,7 +26,7 @@ import org.xml.sax.helpers.AttributesImpl;
 public class AnchorToString extends TagToString {
 
     protected AnchorToString(TagNode node, TagChangeSematic sem,
-            ResourceBundle bundle) {
+                             ResourceBundle bundle) {
         super(node, sem, bundle);
     }
 

@@ -16,7 +16,7 @@ import java.util.List;
 import org.eclipse.compare.internal.LCS;
 import org.eclipse.compare.internal.LCSSettings;
 
-/* package */class RangeComparatorLCS extends LCS {
+class RangeComparatorLCS extends LCS {
 
     private final IRangeComparator comparator1, comparator2;
 
@@ -33,7 +33,7 @@ import org.eclipse.compare.internal.LCSSettings;
     }
 
     public RangeComparatorLCS(IRangeComparator comparator1,
-            IRangeComparator comparator2) {
+                              IRangeComparator comparator2) {
         this.comparator1 = comparator1;
         this.comparator2 = comparator2;
     }
@@ -72,7 +72,7 @@ import org.eclipse.compare.internal.LCSSettings;
             if (length == 0) {
                 differences.add(new RangeDifference(RangeDifference.CHANGE, 0,
                         comparator2.getRangeCount(), 0, comparator1
-                                .getRangeCount()));
+                        .getRangeCount()));
             } else {
                 int index1, index2;
                 index1 = index2 = 0;
@@ -124,7 +124,7 @@ import org.eclipse.compare.internal.LCSSettings;
                 }
                 if (s1 != -1
                         && (s1 + 1 < comparator1.getRangeCount() || s2 + 1 < comparator2
-                                .getRangeCount())) {
+                        .getRangeCount())) {
                     // TODO: we need to find the proper way of representing an
                     // append
                     int leftStart = s1 < comparator1.getRangeCount() ? s1 + 1

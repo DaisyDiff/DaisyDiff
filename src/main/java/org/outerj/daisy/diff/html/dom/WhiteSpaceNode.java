@@ -40,13 +40,13 @@ public class WhiteSpaceNode extends TextNode {
 
     public static boolean isWhiteSpace(char c) {
         switch (c) {
-        case ' ':
-        case '\t':
-        case '\r':
-        case '\n':
-            return true;
-        default:
-            return false;
+            case ' ':
+            case '\t':
+            case '\r':
+            case '\n':
+                return true;
+            default:
+                return false;
         }
     }
 

@@ -64,7 +64,7 @@ public class AncestorComparator implements IRangeComparator {
     }
 
     public AncestorComparatorResult getResult(AncestorComparator other,
-            Locale locale) {
+                                              Locale locale) {
 
         AncestorComparatorResult result = new AncestorComparatorResult();
 

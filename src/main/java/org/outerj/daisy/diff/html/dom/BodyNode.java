@@ -39,7 +39,7 @@ public class BodyNode extends TagNode {
         }
         return newThis;
     }
-    
+
     @Override
     public List<Node> getMinimalDeletedSet(long id) {
         List<Node> nodes = new ArrayList<Node>();
@@ -47,7 +47,7 @@ public class BodyNode extends TagNode {
             List<Node> childrenChildren = child.getMinimalDeletedSet(id);
             nodes.addAll(childrenChildren);
 
-        }        
+        }
         return nodes;
     }
 

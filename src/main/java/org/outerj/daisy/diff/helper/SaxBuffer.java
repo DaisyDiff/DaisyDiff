@@ -31,7 +31,7 @@ import java.io.Writer;
 
 /**
  * A class that can record SAX events and replay them later.
- * 
+ *
  * <p>
  * This class was copied form the Apache Cocoon.
  */
@@ -78,7 +78,7 @@ public class SaxBuffer implements ContentHandler, LexicalHandler, Serializable {
     }
 
     public void startElement(String namespaceURI, String localName,
-            String qName, Attributes atts) throws SAXException {
+                             String qName, Attributes atts) throws SAXException {
         saxbits.add(new StartElement(namespaceURI, localName, qName, atts));
     }
 
@@ -377,7 +377,7 @@ public class SaxBuffer implements ContentHandler, LexicalHandler, Serializable {
         public final Attributes attrs;
 
         public StartElement(String namespaceURI, String localName,
-                String qName, Attributes attrs) {
+                            String qName, Attributes attrs) {
             this.namespaceURI = namespaceURI;
             this.localName = localName;
             this.qName = qName;

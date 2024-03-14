@@ -33,7 +33,7 @@ import org.eclipse.compare.internal.LCSSettings;
  * The algorithm used is an objectified version of one described in: <it>A File
  * Comparison Program,</it> by Webb Miller and Eugene W. Myers, Software
  * Practice and Experience, Vol. 15, Nov. 1985.
- * 
+ *
  * @see IRangeComparator
  * @see RangeDifference
  */
@@ -52,16 +52,14 @@ public final class RangeDifferencer {
      * Finds the differences between two <code>IRangeComparator</code>s. The
      * differences are returned as an array of <code>RangeDifference</code>s.
      * If no differences are detected an empty array is returned.
-     * 
-     * @param left
-     *                the left range comparator
-     * @param right
-     *                the right range comparator
+     *
+     * @param left  the left range comparator
+     * @param right the right range comparator
      * @return an array of range differences, or an empty array if no
-     *         differences were found
+     * differences were found
      */
     public static RangeDifference[] findDifferences(IRangeComparator left,
-            IRangeComparator right) {
+                                                    IRangeComparator right) {
         return findDifferences(new LCSSettings(),
                 left, right);
     }
@@ -70,13 +68,11 @@ public final class RangeDifferencer {
      * Finds the differences between two <code>IRangeComparator</code>s. The
      * differences are returned as an array of <code>RangeDifference</code>s.
      * If no differences are detected an empty array is returned.
-     * 
-     * @param left
-     *                the left range comparator
-     * @param right
-     *                the right range comparator
+     *
+     * @param left  the left range comparator
+     * @param right the right range comparator
      * @return an array of range differences, or an empty array if no
-     *         differences were found
+     * differences were found
      * @since 2.0
      */
     public static RangeDifference[] findDifferences(
@@ -93,15 +89,12 @@ public final class RangeDifferencer {
      * If no differences are detected an empty list is returned. If the ancestor
      * range comparator is <code>null</code>, a two-way comparison is
      * performed.
-     * 
-     * @param ancestor
-     *                the ancestor range comparator or <code>null</code>
-     * @param left
-     *                the left range comparator
-     * @param right
-     *                the right range comparator
+     *
+     * @param ancestor the ancestor range comparator or <code>null</code>
+     * @param left     the left range comparator
+     * @param right    the right range comparator
      * @return an array of range differences, or an empty array if no
-     *         differences were found
+     * differences were found
      * @since 2.0
      */
     public static RangeDifference[] findDifferences(
@@ -127,7 +120,7 @@ public final class RangeDifferencer {
 
             List diff3 = new ArrayList();
             diff3.add(new RangeDifference(RangeDifference.ERROR)); // add a
-                                                                    // sentinel
+            // sentinel
 
             int changeRangeStart = 0;
             int changeRangeEnd = 0;
@@ -148,10 +141,10 @@ public final class RangeDifferencer {
                     startThread = myIter;
                 else { // not at end of both scripts take the lowest range
                     if (myIter.fDifference.fLeftStart <= yourIter.fDifference.fLeftStart) // 2 ->
-                                                                                            // common
-                                                                                            // (Ancestor)
-                                                                                            // change
-                                                                                            // range
+                        // common
+                        // (Ancestor)
+                        // change
+                        // range
                         startThread = myIter;
                     else
                         startThread = yourIter;
@@ -189,11 +182,9 @@ public final class RangeDifferencer {
      * Finds the differences among two <code>IRangeComparator</code>s. In
      * contrast to <code>findDifferences</code>, the result contains
      * <code>RangeDifference</code> elements for non-differing ranges too.
-     * 
-     * @param left
-     *                the left range comparator
-     * @param right
-     *                the right range comparator
+     *
+     * @param left  the left range comparator
+     * @param right the right range comparator
      * @return an array of range differences
      * @since 2.0
      */
@@ -236,13 +227,10 @@ public final class RangeDifferencer {
      * <code>RangeDifference</code> elements for non-differing ranges too. If
      * the ancestor range comparator is <code>null</code>, a two-way
      * comparison is performed.
-     * 
-     * @param ancestor
-     *                the ancestor range comparator or <code>null</code>
-     * @param left
-     *                the left range comparator
-     * @param right
-     *                the right range comparator
+     *
+     * @param ancestor the ancestor range comparator or <code>null</code>
+     * @param left     the left range comparator
+     * @param right    the right range comparator
      * @return an array of range differences
      * @since 2.0
      */
@@ -307,13 +295,13 @@ public final class RangeDifferencer {
         RangeDifference last = (RangeDifference) diff3.get(diff3.size() - 1);
 
         Assert.isTrue((myIter.getCount() != 0 || yourIter.getCount() != 0)); // At
-                                                                                // least
-                                                                                // one
-                                                                                // range
-                                                                                // array
-                                                                                // must
-                                                                                // be
-                                                                                // non-empty
+        // least
+        // one
+        // range
+        // array
+        // must
+        // be
+        // non-empty
         //
         // find corresponding lines to fChangeRangeStart/End in right and left
         //
@@ -343,7 +331,7 @@ public final class RangeDifferencer {
         }
 
         if (kind == RangeDifference.ERROR) { // overlapping change (conflict)
-                                                // -> compare the changed ranges
+            // -> compare the changed ranges
             if (rangeSpansEqual(right, rightStart, rightEnd - rightStart, left,
                     leftStart, leftEnd - leftStart))
                 kind = RangeDifference.ANCESTOR;
@@ -360,8 +348,8 @@ public final class RangeDifferencer {
      * same way
      */
     private static boolean rangeSpansEqual(IRangeComparator right,
-            int rightStart, int rightLen, IRangeComparator left, int leftStart,
-            int leftLen) {
+                                           int rightStart, int rightLen, IRangeComparator left, int leftStart,
+                                           int leftLen) {
         if (rightLen == leftLen) {
             int i = 0;
             for (i = 0; i < rightLen; i++) {
@@ -378,7 +366,7 @@ public final class RangeDifferencer {
      * Tests if two ranges are equal
      */
     private static boolean rangesEqual(IRangeComparator a, int ai,
-            IRangeComparator b, int bi) {
+                                       IRangeComparator b, int bi) {
         return a.rangesEqual(ai, b, bi);
     }
 }
