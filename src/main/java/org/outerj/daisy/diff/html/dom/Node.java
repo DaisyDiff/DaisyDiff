@@ -15,10 +15,9 @@
  */
 package org.outerj.daisy.diff.html.dom;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.outerj.daisy.diff.html.dom.helper.LastCommonParentResult;
 import org.xml.sax.Attributes;
@@ -27,6 +26,9 @@ import org.xml.sax.Attributes;
  * Represents any element in the DOM tree of a HTML file.
  */
 public abstract class Node {
+
+    private static final String SPAN_TAG = "span";
+    private static final String ANCHOR_TAG = "a";
 
     protected TagNode parent;
     private TagNode root;
@@ -224,7 +226,7 @@ public abstract class Node {
             return node;
         } else {
             TagNode parent = node.getParent();
-            if (parent != null && ("span".equals(parent.getQName()) || "a".equals(parent.getQName()))) {
+            if (parent != null && (SPAN_TAG.equals(parent.getQName()) || ANCHOR_TAG.equals(parent.getQName()))) {
                 return getEnclosingPolarionRteLink(parent);
             } else {
                 return null; // If parent node is not span or anchor - stop navigating, because it's not a Polarion RTE link subtree
@@ -233,15 +235,37 @@ public abstract class Node {
     }
 
     protected boolean isPolarionRteLink(TagNode node) {
-        return "span".equals(node.getQName()) && "polarion-rte-link".equals(node.getAttributes().getValue("class"));
+        return SPAN_TAG.equals(node.getQName()) && "polarion-rte-link".equals(node.getAttributes().getValue("class"));
     }
 
     protected boolean pairedLinks(TagNode linkA, TagNode linkB) {
-        return Objects.equals(getOptionId(linkA.getAttributes()), getOptionId(linkB.getAttributes()))
-                && (
-                Objects.equals(getItemId(linkA.getAttributes()), getPairedItemId(linkB.getAttributes()))
-                        || Objects.equals(getItemId(linkB.getAttributes()), getPairedItemId(linkA.getAttributes()))
-        );
+        String optionId = getOptionId(linkA.getAttributes());
+        if (Objects.equals(optionId, getOptionId(linkB.getAttributes()))
+                && (Objects.equals(getItemId(linkA.getAttributes()), getPairedItemId(linkB.getAttributes()))
+                        || Objects.equals(getItemId(linkB.getAttributes()), getPairedItemId(linkA.getAttributes())))) {
+            if ("custom".equals(optionId)) {
+                Node childNodeA = linkA.getNbChildren() == 1 ? linkA.getChild(0) : null;
+                Node childNodeB = linkB.getNbChildren() == 1 ? linkB.getChild(0) : null;
+                if (childNodeA instanceof TagNode && childNodeB instanceof TagNode) {
+                    TagNode childTagNodeA = (TagNode) childNodeA;
+                    TagNode childTagNodeB = (TagNode) childNodeB;
+                    return getInnerText(childTagNodeA).equals(getInnerText(childTagNodeB));
+                } else {
+                    return false;
+                }
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    private String getInnerText(TagNode node) {
+        return StreamSupport.stream(node.spliterator(), false)
+                .filter(n -> n instanceof TextNode)
+                .map(n -> ((TextNode) n).getText())
+                .collect(Collectors.joining(" "));
     }
 
     protected String getItemId(Attributes attributes) {
