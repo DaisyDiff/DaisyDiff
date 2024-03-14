@@ -18,14 +18,16 @@ public class SeparatingNode extends TextNode {
 
     @Override
     public boolean equals(Object other) {
-        // No other separator is equal to this one. This has the effect
-        // that text nodes separated by such a separator can never be
-        // treated as a text sequence by the RangeDifferencer/TextNodeComparator.
-
-        if (other == this) {
+        TagNode polarionRteLink = getEnclosingPolarionRteLink(this.getParent());
+        TagNode anotherPolarionRteLink = (other instanceof TextNode) ? getEnclosingPolarionRteLink(((TextNode) other).getParent()) : null;
+        if (polarionRteLink != null && anotherPolarionRteLink != null && pairedLinks(polarionRteLink, anotherPolarionRteLink)) {
             return true;
+        } else {
+            // No other separator is equal to this one. This has the effect
+            // that text nodes separated by such a separator can never be
+            // treated as a text sequence by the RangeDifferencer/TextNodeComparator.
+            return other == this;
         }
-        return false;
     }
 
 }

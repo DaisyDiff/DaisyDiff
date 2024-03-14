@@ -18,8 +18,10 @@ package org.outerj.daisy.diff.html.dom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import org.outerj.daisy.diff.html.dom.helper.LastCommonParentResult;
+import org.xml.sax.Attributes;
 
 /**
  * Represents any element in the DOM tree of a HTML file.
@@ -214,5 +216,44 @@ public abstract class Node {
     public abstract Node getLeftMostChild();
 
     public abstract Node getRightMostChild();
+
+    protected TagNode getEnclosingPolarionRteLink(TagNode node) {
+        if (node == null) {
+            return null;
+        } else if (isPolarionRteLink(node)) {
+            return node;
+        } else {
+            TagNode parent = node.getParent();
+            if (parent != null && ("span".equals(parent.getQName()) || "a".equals(parent.getQName()))) {
+                return getEnclosingPolarionRteLink(parent);
+            } else {
+                return null; // If parent node is not span or anchor - stop navigating, because it's not a Polarion RTE link subtree
+            }
+        }
+    }
+
+    protected boolean isPolarionRteLink(TagNode node) {
+        return "span".equals(node.getQName()) && "polarion-rte-link".equals(node.getAttributes().getValue("class"));
+    }
+
+    protected boolean pairedLinks(TagNode linkA, TagNode linkB) {
+        return Objects.equals(getOptionId(linkA.getAttributes()), getOptionId(linkB.getAttributes()))
+                && (
+                Objects.equals(getItemId(linkA.getAttributes()), getPairedItemId(linkB.getAttributes()))
+                        || Objects.equals(getItemId(linkB.getAttributes()), getPairedItemId(linkA.getAttributes()))
+        );
+    }
+
+    protected String getItemId(Attributes attributes) {
+        return attributes.getValue("data-item-id");
+    }
+
+    protected String getPairedItemId(Attributes attributes) {
+        return attributes.getValue("data-paired-item-id");
+    }
+
+    protected String getOptionId(Attributes attributes) {
+        return attributes.getValue("data-option-id");
+    }
 
 }

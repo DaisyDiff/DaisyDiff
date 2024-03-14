@@ -230,7 +230,11 @@ public class TagNode extends Node implements Iterable<Node> {
         boolean result = false;
         if (another instanceof TagNode) {
             TagNode otherNode = (TagNode) another;
-            if (this.getQName().equalsIgnoreCase(otherNode.getQName())) {
+            TagNode polarionRteLink = getEnclosingPolarionRteLink(this);
+            TagNode anotherPolarionRteLink = getEnclosingPolarionRteLink(otherNode);
+            if (polarionRteLink != null && anotherPolarionRteLink != null && pairedLinks(polarionRteLink, anotherPolarionRteLink)) {
+                return true;
+            } else if (this.getQName().equalsIgnoreCase(otherNode.getQName())) {
                 result = hasSameAttributes(otherNode.getAttributes());
             }
         }

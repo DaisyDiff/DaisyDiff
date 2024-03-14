@@ -85,8 +85,15 @@ public class TextNode extends Node implements Cloneable {
         } catch (ClassCastException e) {
             return false;
         }
-        return getText().replace('\n', ' ').equals(
-                otherTextNode.getText().replace('\n', ' '));
+
+        TagNode polarionRteLink = getEnclosingPolarionRteLink(this.getParent());
+        TagNode anotherPolarionRteLink = getEnclosingPolarionRteLink(otherTextNode.getParent());
+        if (polarionRteLink != null && anotherPolarionRteLink != null && pairedLinks(polarionRteLink, anotherPolarionRteLink)) {
+            return true;
+        } else {
+            return getText().replace('\n', ' ').equals(
+                    otherTextNode.getText().replace('\n', ' '));
+        }
     }
 
     public void setModification(Modification m) {

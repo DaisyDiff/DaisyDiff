@@ -42,7 +42,13 @@ public class ImageNode extends TextNode {
         } catch (ClassCastException e) {
             return false;
         }
-        return getText().equalsIgnoreCase(otherImageNode.getText());
+        TagNode polarionRteLink = getEnclosingPolarionRteLink(this.getParent());
+        TagNode anotherPolarionRteLink = otherImageNode.getParent();
+        if (polarionRteLink != null && anotherPolarionRteLink != null && pairedLinks(polarionRteLink, anotherPolarionRteLink)) {
+            return true;
+        } else {
+            return getText().equalsIgnoreCase(otherImageNode.getText());
+        }
     }
 
     public AttributesImpl getAttributes() {
