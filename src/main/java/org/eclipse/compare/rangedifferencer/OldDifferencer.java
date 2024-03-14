@@ -12,9 +12,6 @@ package org.eclipse.compare.rangedifferencer;
 
 import java.util.ArrayList;
 
-import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.IProgressMonitor;
-
 /**
  * The algorithm used is an objectified version of one described in: <it>A File
  * Comparison Program,</it> by Webb Miller and Eugene W. Myers, Software
@@ -72,7 +69,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
         }
     }
 
-    public static RangeDifference[] findDifferences(IProgressMonitor pm,
+    public static RangeDifference[] findDifferences(
             IRangeComparator left, IRangeComparator right) {
 
         // assert that both IRangeComparators are of the same class
@@ -117,9 +114,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
         for (int d = 1; d <= maxDiagonal; ++d) { // d is the current edit
                                                     // distance
 
-            if (pm != null)
-                pm.worked(1);
-
             if (right.skipRangeComparison(d, maxDiagonal, left))
                 return EMPTY_RESULT; // should be something we already found
 
@@ -127,9 +121,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
             for (int k = lower; k <= upper; k += 2) { // k is the current
                                                         // diagonal
                 LinkedRangeDifference edit;
-
-                if (pm != null && pm.isCanceled())
-                    return EMPTY_RESULT;
 
                 if (k == origin - d || k != origin + d
                         && lastDiagonal[k + 1] >= lastDiagonal[k - 1]) {

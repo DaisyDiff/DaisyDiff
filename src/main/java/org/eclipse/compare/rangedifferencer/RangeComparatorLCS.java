@@ -13,12 +13,8 @@ package org.eclipse.compare.rangedifferencer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.compare.internal.CompareMessages;
 import org.eclipse.compare.internal.LCS;
 import org.eclipse.compare.internal.LCSSettings;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.core.runtime.SubMonitor;
 
 /* package */class RangeComparatorLCS extends LCS {
 
@@ -26,17 +22,13 @@ import org.eclipse.core.runtime.SubMonitor;
 
     private int[][] lcs;
 
-    public static RangeDifference[] findDifferences(IProgressMonitor pm,
+    public static RangeDifference[] findDifferences(
             LCSSettings settings, IRangeComparator left, IRangeComparator right) {
         RangeComparatorLCS lcs = new RangeComparatorLCS(left, right);
-        SubMonitor monitor = SubMonitor.convert(pm,
-                CompareMessages.RangeComparatorLCS_0, 100);
         try {
-            lcs.longestCommonSubsequence(monitor.newChild(95), settings);
-            return lcs.getDifferences(monitor.newChild(5));
+            lcs.longestCommonSubsequence(settings);
+            return lcs.getDifferences();
         } finally {
-            if (pm != null)
-                pm.done();
         }
     }
 
@@ -73,7 +65,7 @@ import org.eclipse.core.runtime.SubMonitor;
         lcs[1][sl1] = sl2 + 1;
     }
 
-    public RangeDifference[] getDifferences(SubMonitor subMonitor) {
+    public RangeDifference[] getDifferences() {
         try {
             List differences = new ArrayList();
             int length = getLength();
@@ -82,7 +74,6 @@ import org.eclipse.core.runtime.SubMonitor;
                         comparator2.getRangeCount(), 0, comparator1
                                 .getRangeCount()));
             } else {
-                subMonitor.beginTask(null, length);
                 int index1, index2;
                 index1 = index2 = 0;
                 int l1, l2;
@@ -130,7 +121,6 @@ import org.eclipse.core.runtime.SubMonitor;
                     s2 = end2;
                     index1++;
                     index2++;
-                    worked(subMonitor, 1);
                 }
                 if (s1 != -1
                         && (s1 + 1 < comparator1.getRangeCount() || s2 + 1 < comparator2
@@ -151,14 +141,8 @@ import org.eclipse.core.runtime.SubMonitor;
             return (RangeDifference[]) differences
                     .toArray(new RangeDifference[differences.size()]);
         } finally {
-            subMonitor.done();
         }
     }
 
-    private void worked(SubMonitor subMonitor, int work) {
-        if (subMonitor.isCanceled())
-            throw new OperationCanceledException();
-        subMonitor.worked(work);
-    }
 
 }
